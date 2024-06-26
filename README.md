@@ -1,7 +1,7 @@
 # System Documentation
 
 ## StockDataSystem `interface`
-### 功能 :
+### 功:
 > 存取所有資料
 
 ### 方法 :
