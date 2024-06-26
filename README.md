@@ -1,42 +1,48 @@
 # System Documentation
 
-## `input`
+## 輸入`main`
 ### 功能:
 > 存取需要的參數，使用者輸入初始角度、結束的角度、棍子的質量及長度
-> 角度的型別
+>* 初始角度的型別
 > ```c++
 > double InitialAngle
 > ```
 
-> * 取得有買賣設定的股票集合
-> ```java
-> public Set<String> getStockNamesHasBuyingSetting()
-> ``` 
-
-> * 取得特定股票資料
-> ```java
-> public Stock getStock(String stockName)
+>* 結束角度的型別
+> ```c++
+> double TerminalAngle
 > ```
 
-> * 將一種股票新增近stocksMap中
-> ```java
-> public void addStock2StocksMap(String stockName, double stockPrice)
+>* 棒子質量
+>  型別?
+
+>* 棒子長度
+>  型別?
+
+###怎麼樣呼叫函式
+
+##計算`function`
+>*計算角速度
+> ```c++
+> double angspeed(   length, double degree)
+> return angSpeed 
 > ```
 
-> * 取得設有買賣設定的股票集合, Set<股票名稱>
-> ```java
-> public Set<String> getStockNamesHasBuyingSetting()
+>*計算角加速度
+> ```c++
+> double angAcceler(   length, double degree)
+> return angAcceler;
 > ```
 
-> * 取得某股票的買賣設定
-> ```java
-> public StockBuyingSetting getBuyingSetting(String stockName)
-> ```
+##輸出`main`
+###功能
+>*顯示出棍子從初始角度落下到結束的角度間的動態
+>Q可不可以在畫面中棍子移動到的位置顯示該位置的角速度與角加速度呢?例如有兩個角(加)速度值得顯示格，其中的數值會一直跳
+>Q計算角速度、角加速度的函示分別回傳到main的值可以在顯示時有幫助嗎?
+>Q顯示的時候是要如何顯示出加速度感用一貞一貞
 
-> * 儲存某股票的買賣設定
-> ```java
-> public void saveBuyingSetting(String stockName, double bidPrice, double offerStep, double bidStep, int stockCount)
-> ```
+
+
 
 > * 設定使用者的Secret Key, KeyID
 > ```java
