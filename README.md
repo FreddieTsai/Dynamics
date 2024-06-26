@@ -4,8 +4,8 @@
 ### 功能:
 > 存取需要的參數，使用者輸入初始角度、結束的角度、棍子的質量及長度
 > 角度的型別
-> ```java
-> public Map<String, Stock> getStocksMap();
+> ```c++
+> double InitialAngle
 > ```
 
 > * 取得有買賣設定的股票集合
