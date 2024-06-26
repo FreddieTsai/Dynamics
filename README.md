@@ -1,10 +1,9 @@
 # System Documentation
 
-## 輸入初始角度、結束角度 `input`
+## `input`
 ### 功能:
 > 存取需要的參數
-
-> * 取得Map<股票名稱, 該股票資訊>
+> * 使用者輸入初始角度、結束的角度、棍子的質量及長度
 > ```java
 > public Map<String, Stock> getStocksMap();
 > ```
