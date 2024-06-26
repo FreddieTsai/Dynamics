@@ -1,7 +1,7 @@
 # System Documentation
 
-## StockDataSystem `interface`
-### 功:
+## Angular acceleration computing `function`
+### 功能:
 > 存取所有資料
 
 ### 方法 :
