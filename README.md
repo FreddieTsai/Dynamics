@@ -1,8 +1,8 @@
 # System Documentation
 
-## Angular acceleration computing `function`
+## 輸入初始角度、結束角度 `input`
 ### 功能:
-> 存取所有資料
+> 存取需要的參數
 
 ### 方法 :
 > * 設定是否完成登入
