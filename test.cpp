@@ -3,6 +3,9 @@
 #include<iomanip>
 //Ex17.11
 
+double angSpeed (double length, double degree);
+double angAcceler (double length, double degree);
+
 using namespace std;
 
 int main() {
@@ -19,14 +22,20 @@ int main() {
     cin >> terminalDegree; 
     terminalDegree = (terminalDegree / 180) * pi;
     degree = initialDegree;
-    cout << "Angular Velocity" << "    " << "Angualar Acceleration";
-    do{
-        AngAcceler = 1.5 * 9.81 * cos(degree) / length;
-        double squareOfAngSpeed;
-        squareOfAngSpeed = 3 * 9.81 * sin(degree) / length;
-        AngSpeed = pow(squareOfAngSpeed, 0.5); 
-        degree += ((1 / 180) * pi);
-        cout << setw(5) << AngSpeed << setw(5) << AngAcceler << endl;
-    } while (degree == terminalDegree);
+    cout << angSpeed (length, degree) << endl;
+    cout <<  angAcceler(length, degree) << endl;
     return 0;
+}
+
+double angSpeed (double length, double degree){
+    double squareOfAngSpeed,  AngSpeed;
+    squareOfAngSpeed = 3 * 9.81 * sin(degree) / length;
+    AngSpeed = pow(squareOfAngSpeed, 0.5); 
+    return AngSpeed;
+}
+
+double angAcceler (double length, double degree){
+    double AngAcceler;
+    AngAcceler = 1.5 * 9.81 * cos(degree) / length;
+    return AngAcceler;
 }
