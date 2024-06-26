@@ -4,17 +4,6 @@
 ### 功能:
 > 存取需要的參數
 
-### 方法 :
-> * 設定是否完成登入
-> ```java
-> public void setLogin(boolean isLogin);
-> ```
-
-> * 檢查是否登入
-> ```java
-> public boolean checkIsLogin();
-> ```
-
 > * 取得Map<股票名稱, 該股票資訊>
 > ```java
 > public Map<String, Stock> getStocksMap();
