@@ -1,4 +1,4 @@
-# Dynamics
+# Dynamics documentation
 
 ## 輸入`main`
 ### 功能:
