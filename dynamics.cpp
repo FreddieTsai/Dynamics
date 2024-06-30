@@ -54,7 +54,7 @@ double angAcceler (double length, double degree){
 
 double calculateDegree (double length, double degree){
     double t = 0.0001;
-    degree = angSpeed( length, degree ) * t + 0.5 * angAcceler(length, degree) * t * t;
+    degree = angSpeed(length, degree ) * t + 0.5 * angAcceler(length, degree) * t * t;
     return degree;
 }
 
