@@ -39,6 +39,8 @@
 
     ```c++
     Screen create_screen()
+    ```
+    ```c++
     Screen create_screen(int screen_width, int screen_height)
     ```
 
@@ -56,6 +58,8 @@
 
     ```c++
     Screen set_screen_size(Screen screen)
+    ```
+    ```c++
     Screen set_screen_size(Screen screen, int screen_width, int screen_height)
     ```
 
