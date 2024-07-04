@@ -127,6 +127,7 @@
     * 參數：
         1. `screen` : 螢幕物件
     * 回傳值：傳入的螢幕物件 or NULL(執行失敗)
+    - 註：執行此函式會把螢幕清空
 
     ```c++
     Screen screen_show(Screen screen)
