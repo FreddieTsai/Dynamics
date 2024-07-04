@@ -51,12 +51,12 @@
         1. `screen`           : 螢幕物件
         2. `screen_width`     : 螢幕顯示範圍的高度
         3. `screen_height`    : 螢幕顯示範圍的寬度
-    * 回傳值：無
+    * 回傳值：傳入的螢幕物件 or NULL(執行失敗)
     - 註：執行此函式會把螢幕清空
 
     ```c++
-    void set_screen_size(Screen screen)
-    void set_screen_size(Screen screen, int screen_width, int screen_height)
+    Screen set_screen_size(Screen screen)
+    Screen set_screen_size(Screen screen, int screen_width, int screen_height)
     ```
 
     - - -
@@ -66,10 +66,10 @@
     * 功能：把螢幕清空，這樣就能畫新東西了
     * 參數：
         1. `screen` : 螢幕物件
-    * 回傳值：無
+    * 回傳值：傳入的螢幕物件 or NULL(執行失敗)
 
     ```c++
-    void clean_screen(Screen screen)
+    Screen clean_screen(Screen screen)
     ```
 
     - - -
@@ -81,10 +81,10 @@
         1. `screen`    : 螢幕物件
         2. `theta`     : 單擺 和 **X軸正向** 的夾角
         3. `length`    : 單擺的長度
-    * 回傳值：無
+    * 回傳值：傳入的螢幕物件 or NULL(執行失敗)
 
     ```c++
-    void draw_pendulum(Screen screen, double theta, double length)
+    Screen draw_pendulum(Screen screen, double theta, double length)
     ```
 
     - - -
@@ -99,10 +99,10 @@
         4. `omega`  : 單擺的角速度
         5. `length` : 單擺的長度
         6. `mass`   : 單擺的質量
-    * 回傳值：無
+    * 回傳值：傳入的螢幕物件 or NULL(執行失敗)
 
     ```c++
-    void draw_data_panel(Screen screen, char* theta, char* alpha, char* omega, char* length, char* mass)
+    Screen draw_data_panel(Screen screen, char* theta, char* alpha, char* omega, char* length, char* mass)
     ```
 
     - - -
@@ -113,10 +113,10 @@
     * 參數：
         1. `screen` : 螢幕物件
         2. `name`   : 正在輸入哪個參數
-    * 回傳值：無
+    * 回傳值：傳入的螢幕物件 or NULL(執行失敗)
 
     ```c++
-    void screen_input(Screen screen, screen_input_name name)
+    Screen screen_input(Screen screen, screen_input_name name)
     ```
 
     - - -
@@ -126,8 +126,8 @@
     * 功能：把 螢幕上的內容 顯示出來
     * 參數：
         1. `screen` : 螢幕物件
-    * 回傳值：無
+    * 回傳值：傳入的螢幕物件 or NULL(執行失敗)
 
     ```c++
-    void screen_show(Screen screen)
+    Screen screen_show(Screen screen)
     ```
