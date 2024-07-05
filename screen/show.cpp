@@ -36,5 +36,8 @@ Screen screen_show(Screen screen) {
     // clean screen
     clean_screen(screen);
 
+    // clean input
+    // screen_input(screen, NONE);
+
     return screen;
 }

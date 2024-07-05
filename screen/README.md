@@ -2,7 +2,7 @@
 
 ## 步驟
 1. 初始化螢幕物件 `create_screen`
-2. 畫東西上去 `draw_pendulum` or `draw_data_panel` or `screen_input`
+2. 畫東西上去 `draw_pendulum` or `draw_data_panel`
 3. 顯示出來 `screen_show`
 
 <br>
