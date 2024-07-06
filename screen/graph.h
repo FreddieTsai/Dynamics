@@ -1,5 +1,5 @@
 /**
- * @file __graph.h
+ * @file graph.h
  * @author IalvinchangI
  * @brief 在螢幕上畫出字、圖，以及一些常用的符號 () (`print_string`, `print_line`, `print_char`)
  * @version 0.3
@@ -7,10 +7,10 @@
  */
 
 
-#ifndef __graph_H_
-    #define __graph_H_
+#ifndef graph_H_
+    #define graph_H_
 
-    #include "__vector.h"  // position, rectangle
+    #include "vector.h"  // position, rectangle
 
 
     // useful word
@@ -29,10 +29,18 @@
 
     // function
 
-    void print_char(Screen screen, position pos, char character);
+    #ifdef __cplusplus
+    extern "C" {
+    #endif
 
-    void print_string(Screen screen, position pos, char* str, int length);
+        void print_char(Screen screen, position pos, char character);
 
-    void print_line(Screen screen, position start_pos, position end_pos, int width, char color, rectangle boundary);
+        void print_string(Screen screen, position pos, char* str, int length);
+
+        void print_line(Screen screen, position start_pos, position end_pos, int width, char color, rectangle boundary);
+
+    #ifdef __cplusplus
+    }
+    #endif
 
 #endif

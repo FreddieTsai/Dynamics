@@ -2,19 +2,20 @@
  * @file draw.cpp
  * @author IalvinchangI
  * @brief 畫各個面板 (`clean_screen`, `draw_pendulum`, `draw_data_panel`, `screen_input`) (`draw_info_panel`) ()
- * @version 0.2
- * @date 2024-07-05
+ * @version 0.3
+ * @date 2024-07-06
  */
 
 
+#include<stdio.h>
 #include<stdlib.h>  // NULL
 #include<string.h>  // strlen
 #include<math.h>  // cos, sin
 #include<stdbool.h>  // true, false
 
-#include "__screen_object.h"  // Screen, Layout, screen_input_name
-#include "__vector.h"  // position, rectangle
-#include "__graph.h"  // all
+#include "screen_object.h"  // Screen, Layout, screen_input_name
+#include "vector.h"  // position, rectangle
+#include "graph.h"  // all
 
 
 
@@ -33,7 +34,7 @@ static char *data_panel_contents[5] = {
     STR_LENGTH "              "     STR_EQUAL, 
     STR_MASS   "                "   STR_EQUAL
 };
-static int data_panel_content_length = strlen(data_panel_contents[0]);
+// static int data_panel_content_length = strlen(data_panel_contents[0]);
 
 static char *info_content = "insert"   STR_COLON "I"           STR_SMALL_SPACE
                             STR_THETA  STR_COLON "T"           STR_SMALL_SPACE
@@ -43,7 +44,7 @@ static char *info_content = "insert"   STR_COLON "I"           STR_SMALL_SPACE
                             "continue" STR_COLON "C"           STR_LARGE_SPACE
                             "end"      STR_COLON "E | ctrl+c"
 ;
-static int info_content_length = strlen(info_content);
+// static int info_content_length = strlen(info_content);
 
 
 /**
@@ -77,6 +78,7 @@ unsigned short const SCREEN_MINIMUM_HEIGHT = DATA_PANEL_HEIGHT + 2 + INFO_PANEL_
  * @return 傳入的螢幕物件 or NULL(執行失敗)
  */
 Screen clean_screen(Screen screen) {
+    printf("start clean_screen\n");
     for (int y = 0; y < screen -> height; y++) {
         for (int x = 0; x < screen -> width; x++) {
             print_char(screen, (position){x, y}, CHAR_SPACE);
@@ -85,6 +87,7 @@ Screen clean_screen(Screen screen) {
     }
 
     screen -> empty_TF = true;
+    printf("end clean_screen\n");
     return screen;
 }
 
@@ -102,8 +105,8 @@ Screen clean_screen(Screen screen) {
  */
 Screen draw_pendulum(Screen screen, double theta, double length) {
     position end_pos = {
-        screen -> layout.pivot[0] + (int)( cos(theta) * length), 
-        screen -> layout.pivot[1] + (int)(-sin(theta) * length)
+        screen -> layout.pivot.x + (int)( cos(theta) * length), 
+        screen -> layout.pivot.y + (int)(-sin(theta) * length)
     };
 
     // body
@@ -130,29 +133,30 @@ Screen draw_pendulum(Screen screen, double theta, double length) {
  */
 Screen draw_data_panel(Screen screen, char* theta, char* alpha, char* omega, char* length, char* mass) {
     char *input_data[5] = {theta, alpha, omega, length, mass};
+    int data_panel_content_length = strlen(data_panel_contents[0]);
     position current_pos = {
-        screen -> layout.data_panel[0] + 1, 
-        screen -> layout.data_panel[1] + 1, 
+        screen -> layout.data_panel.x + 1, 
+        screen -> layout.data_panel.y + 1, 
     };
 
     // print
     for (int i = 0; i < 5; i++) {
         // update y
-        current_pos[1] += i * 2;
+        current_pos.y += i * 2;
 
         // print and move
         print_string(screen, current_pos, data_panel_contents[i], data_panel_content_length);
-        current_pos[0] += data_panel_content_length;
+        current_pos.x += data_panel_content_length;
         print_string(screen, current_pos, input_data[i], INPUT_FIELD_LENGTH);
         
         if ((screen -> input_name != NONE) && (i == screen -> input_name)) {  // print input?
             int input_length = strlen(input_data[i]);
-            current_pos[0] += (input_length <= INPUT_FIELD_LENGTH ? input_length : INPUT_FIELD_LENGTH);
+            current_pos.x += (input_length <= INPUT_FIELD_LENGTH ? input_length : INPUT_FIELD_LENGTH);
             print_char(screen, current_pos, CHAR_INPUT);
         }
 
         // reset x
-        current_pos[0] = screen -> layout.data_panel[0] + 1;
+        current_pos.x = screen -> layout.data_panel.x + 1;
     }
 
     screen -> empty_TF = false;
@@ -167,6 +171,8 @@ Screen draw_data_panel(Screen screen, char* theta, char* alpha, char* omega, cha
  * @return 傳入的螢幕物件 or NULL(執行失敗)
  */
 Screen draw_info_panel(Screen screen) {
+    printf("start draw_info_panel\n");
+    int info_content_length = strlen(info_content);
     print_string(screen, screen -> layout.info_panel_content, info_content, info_content_length);
 
     screen -> empty_TF = false;

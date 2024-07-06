@@ -1,14 +1,14 @@
 /**
- * @file __panel_constant.h
+ * @file panel_constant.h
  * @author IalvinchangI
  * @brief 各種和面板、螢幕有關的常數
- * @version 0.1
- * @date 2024-07-05
+ * @version 0.2
+ * @date 2024-07-06
  */
 
 
-#ifndef __panel_constant_H_
-    #define __panel_constant_H_
+#ifndef panel_constant_H_
+    #define panel_constant_H_
 
     extern unsigned short const INPUT_FIELD_LENGTH;
 

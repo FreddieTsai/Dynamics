@@ -1,19 +1,19 @@
 /**
- * @file __screen_object.h
+ * @file screen_object.h
  * @author IalvinchangI
  * @brief 定義 `Screen`, `Layout`，引入 `screen_input_name`
- * @version 0.4
- * @date 2024-07-05
+ * @version 0.5
+ * @date 2024-07-06
  */
 
 
-#ifndef __screen_object_H_
-    #define __screen_object_H_
+#ifndef screen_object_H_
+    #define screen_object_H_
 
     #include<stdbool.h>  // bool
 
-    #include "__vector.h"  // position, rectangle
-    #include "__screen_input_name.h"  // screen_input_name
+    #include "vector.h"  // position, rectangle
+    #include "screen_input_name.h"  // screen_input_name
 
 
     /**

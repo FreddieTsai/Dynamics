@@ -1,19 +1,20 @@
 /**
  * @file setting.cpp
  * @author IalvinchangI
- * @brief `Screen`的設定、刪除 (`set_screen_size`, `create_screen`) () (`set_layout`, `init_screen`, `delete_screen`, `delete_ground`)
- * @version 0.5
- * @date 2024-07-05
+ * @brief `Screen`的設定、刪除 (`set_screen_size`, `create_screen`, `delete_ground`) () (`set_layout`, `init_screen`, `delete_screen`)
+ * @version 0.6
+ * @date 2024-07-06
  */
 
 
+#include<stdio.h>
 #include<stdlib.h>  // malloc, free, NULL
 #include<stdbool.h>  // true
 #include<Windows.h>  // HANDLE, GetStdHandle, STD_OUTPUT_HANDLE, INVALID_HANDLE_VALUE, CONSOLE_SCREEN_BUFFER_INFO, GetConsoleScreenBufferInfo
 
-#include "__screen_object.h"  // Screen, Layout, screen_input_name.NONE
-#include "__draw.h" // clean_screen
-#include "__panel_constant.h"  // DATA_PANEL_WIDTH, DATA_PANEL_HEIGHT, INFO_LENGTH, SCREEN_MINIMUM_WIDTH, SCREEN_MINIMUM_HEIGHT
+#include "screen_object.h"  // Screen, Layout, screen_input_name.NONE
+#include "draw.h" // clean_screen
+#include "panel_constant.h"  // DATA_PANEL_WIDTH, DATA_PANEL_HEIGHT, INFO_LENGTH, SCREEN_MINIMUM_WIDTH, SCREEN_MINIMUM_HEIGHT
 
 
 
@@ -21,11 +22,17 @@
 // ================================== delete ==================================
 
 // free screen -> ground
-void delete_ground(Screen screen) {
-    for (int y = 0; y < screen -> height; y++) {
-        free(screen -> ground[y]);
+static void delete_ground(Screen screen) {
+    // printf("start delete_ground\n");
+    if (screen -> ground != NULL) {
+        // printf("is NULL\n");
+        for (int y = 0; y < screen -> height; y++) {
+            free(screen -> ground[y]);
+        }
+        free(screen -> ground);
+        screen -> ground = NULL;
     }
-    free(screen -> ground);
+    // printf("end delete_ground\n");
 }
 
 
@@ -35,8 +42,11 @@ void delete_ground(Screen screen) {
  * @param screen 螢幕物件
  */
 void delete_screen(Screen screen) {
-    delete_ground(screen);
-    free(screen);
+    if (screen != NULL) {
+        delete_ground(screen);
+        free(screen);
+        screen = NULL;
+    }
 }
 
 
@@ -45,17 +55,21 @@ void delete_screen(Screen screen) {
 // ================================== set_screen_size ==================================
 
 // according to the size of screen, this function will adjust the position of each panel
-Screen set_layout(Screen screen) {
+static Screen set_layout(Screen screen) {
+    printf("start set_layout\n");
+
     // free ground
     delete_ground(screen);
 
     // set ground
     screen -> ground = (char**) malloc(sizeof(char) * (screen -> height));
+    printf("%d\n", screen -> ground == NULL);
     if (screen -> ground == NULL) {  // <error> cannot allocate memory
         return NULL;
     }
     for (int y = 0; y < screen -> height; y++) {
         screen -> ground[y] = (char*) malloc(sizeof(char) * (screen -> width + 1));  // +1 for '\0'
+    printf("123\n");
         if (screen -> ground[y] == NULL) {  // <error> cannot allocate memory
             return NULL;
         }
@@ -66,23 +80,24 @@ Screen set_layout(Screen screen) {
     int pendulum_panel_height = screen -> height - INFO_PANEL_HEIGHT;
 
     // set the position of pivot
-    screen -> layout.pivot[0] = (int)(pendulum_panel_width / 2);
-    screen -> layout.pivot[1] = (int)(pendulum_panel_height / 5) + 1.;
+    screen -> layout.pivot.x = (int)(pendulum_panel_width / 2);
+    screen -> layout.pivot.y = (int)(pendulum_panel_height / 5) + 1.;
 
     // set the boundary of pendulum panel
-    screen -> layout.pendulum_boundary[0][0] = 0;
-    screen -> layout.pendulum_boundary[0][1] = 0;
-    screen -> layout.pendulum_boundary[1][0] = pendulum_panel_width;
-    screen -> layout.pendulum_boundary[1][1] = pendulum_panel_height;
+    screen -> layout.pendulum_boundary.top_left.x = 0;
+    screen -> layout.pendulum_boundary.top_left.y = 0;
+    screen -> layout.pendulum_boundary.bottom_right.x = pendulum_panel_width;
+    screen -> layout.pendulum_boundary.bottom_right.y = pendulum_panel_height;
 
     // set the position of data_panel
-    screen -> layout.data_panel[0] = pendulum_panel_width;
-    screen -> layout.data_panel[1] = (int)((pendulum_panel_height - DATA_PANEL_HEIGHT) / 2);
+    screen -> layout.data_panel.x = pendulum_panel_width;
+    screen -> layout.data_panel.y = (int)((pendulum_panel_height - DATA_PANEL_HEIGHT) / 2);
 
     // set the position of info_panel_content
-    screen -> layout.info_panel_content[0] = (int)((screen -> width - INFO_LENGTH) / 2);
-    screen -> layout.info_panel_content[1] = pendulum_panel_height + 1;
+    screen -> layout.info_panel_content.x = (int)((screen -> width - INFO_LENGTH) / 2);
+    screen -> layout.info_panel_content.y = pendulum_panel_height + 1;
 
+    printf("end set_layout\n");
     return screen;
 }
 
@@ -118,6 +133,7 @@ Screen set_screen_size(Screen screen, int screen_width, int screen_height) {
  * @return 傳入的螢幕物件 or NULL(執行失敗)
  */
 Screen set_screen_size(Screen screen) {
+    printf("start set_screen_size\n");
     // get window size
     HANDLE handle_console = GetStdHandle(STD_OUTPUT_HANDLE);
     if (handle_console == INVALID_HANDLE_VALUE || handle_console == NULL) {  // fail to get StdHandle
@@ -132,6 +148,8 @@ Screen set_screen_size(Screen screen) {
     int console_width = console_info.srWindow.Right - console_info.srWindow.Left + 1;
     int console_height = console_info.srWindow.Bottom - console_info.srWindow.Top;  // there is one line for user input at bottom
 
+    printf("end set_screen_size\n");
+
     // setting
     return set_screen_size(screen, console_width, console_height);
 }
@@ -142,11 +160,12 @@ Screen set_screen_size(Screen screen) {
 // ================================== create_screen ==================================
 
 // malloc and initialize `empty_TF` and `input_name`
-Screen init_screen() {
+static Screen init_screen() {
     Screen screen = (Screen) malloc(sizeof(Screen));
     if (screen == NULL) {
         return NULL;  // <error> cannot allocate memory
     }
+    screen -> ground = NULL;
     screen -> empty_TF = true;  // screen is empty
     screen -> input_name = NONE;  // it is not inputting
     return screen;  // succeed
