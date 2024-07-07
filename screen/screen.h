@@ -2,8 +2,8 @@
  * @file screen.h
  * @author IalvinchangI
  * @brief 處理螢幕顯示
- * @version 0.6
- * @date 2024-07-06
+ * @version 0.7
+ * @date 2024-07-07
  */
 
 
@@ -24,6 +24,7 @@
 
 
     #include "screen_input_name.h"
+    #include "PI.h"
 
 
 
@@ -35,6 +36,12 @@
 
     Screen set_screen_size(Screen screen);
     Screen set_screen_size(Screen screen, int screen_width, int screen_height);
+
+
+    Screen set_pendulum_radius(Screen screen, int radius);
+
+
+    void delete_screen(Screen screen);
 
 
     #ifdef __cplusplus

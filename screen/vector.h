@@ -1,17 +1,14 @@
 /**
  * @file vector.h
  * @author IalvinchangI
- * @brief 定義 `PI`, `position`, `vector`及其運算(`vectors_angle`), `rectangle`
- * @version 0.5
- * @date 2024-07-06
+ * @brief 定義 `position`, `vector`及其運算(`vectors_angle`), `rectangle`
+ * @version 0.6
+ * @date 2024-07-07
  */
 
 
 #ifndef vector_H_
     #define vector_H_
-
-
-    #define PI (3.141592653589)
 
     /**
      * @brief 螢幕座標 (x, y)
@@ -34,6 +31,7 @@
     extern "C" {
     #endif
 
+        double magnitude(vector v);
         double vectors_angle(vector v1, vector v2);
 
     #ifdef __cplusplus

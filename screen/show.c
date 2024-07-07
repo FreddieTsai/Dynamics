@@ -2,8 +2,8 @@
  * @file show.cpp
  * @author IalvinchangI
  * @brief 把螢幕上的內容顯示出來 (`screen_show`) () ()
- * @version 0.1
- * @date 2024-07-04
+ * @version 0.2
+ * @date 2024-07-07
  */
 
 
@@ -24,7 +24,7 @@
 Screen screen_show(Screen screen) {
     // draw last part
     draw_info_panel(screen);
-    printf("finish_panel\n");
+    draw_screen_input(screen);
 
     // clean cmd
     system("CLS");

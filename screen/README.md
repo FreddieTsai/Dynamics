@@ -31,15 +31,20 @@
 
 * ### create_screen
 
-    * 功能：用來初始化 螢幕物件(`Screen`)
-    * 參數：
-        1. `screen_width`     : 螢幕顯示範圍的高度
-        2. `screen_height`    : 螢幕顯示範圍的寬度
+    * 功能：初始化 螢幕物件(`Screen`)，並根據視窗當前大小來設定顯示範圍
+    * 參數：無
     * 回傳值：初始化好的物件 or NULL(初始化失敗)
 
     ```c++
     Screen create_screen()
     ```
+
+    * 功能：初始化 螢幕物件(`Screen`)
+    * 參數：
+        1. `screen_width`     : 螢幕顯示範圍的高度
+        2. `screen_height`    : 螢幕顯示範圍的寬度
+    * 回傳值：初始化好的物件 or NULL(初始化失敗)
+
     ```c++
     Screen create_screen(int screen_width, int screen_height)
     ```
@@ -47,6 +52,16 @@
     - - -
 
 * ### set_screen_size
+
+    * 功能：根據視窗當前大小來設定顯示範圍
+    * 參數：
+        1. `screen`           : 螢幕物件
+    * 回傳值：傳入的螢幕物件 or NULL(執行失敗)
+    - 註：執行此函式會把螢幕清空
+
+    ```c++
+    Screen set_screen_size(Screen screen)
+    ```
 
     * 功能：用來設定顯示範圍
     * 參數：
@@ -57,10 +72,34 @@
     - 註：執行此函式會把螢幕清空
 
     ```c++
-    Screen set_screen_size(Screen screen)
-    ```
-    ```c++
     Screen set_screen_size(Screen screen, int screen_width, int screen_height)
+    ```
+
+    - - -
+
+* ### set_pendulum_radius
+
+    * 功能：設定 單擺的寬度半徑
+    * 參數：
+        1. `screen` : 螢幕物件
+        2. `radius` : 寬度半徑
+    * 回傳值：傳入的螢幕物件 or NULL(執行失敗)
+
+    ```c++
+    Screen set_pendulum_radius(Screen screen, int radius)
+    ```
+
+    - - -
+
+* ### delete_screen
+
+    * 功能：把 螢幕物件 回收
+    * 參數：
+        1. `screen` : 螢幕物件
+    * 回傳值：無
+
+    ```c++
+    void delete_screen(Screen screen)
     ```
 
     - - -
@@ -113,7 +152,7 @@
 
 * ### screen_input
 
-    * 功能：把 等待輸入的符號(I) 畫出來
+    * 功能：把 等待輸入的符號 畫出來
     * 參數：
         1. `screen` : 螢幕物件
         2. `name`   : 正在輸入哪個參數

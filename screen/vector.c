@@ -1,9 +1,9 @@
 /**
  * @file vector.cpp
  * @author IalvinchangI
- * @brief 定義 vector 運算 () (`vectors_angle`) (`magnitude`, `dot_product`)
- * @version 0.3
- * @date 2024-07-06
+ * @brief 定義 vector 運算 () (`vectors_angle`, `magnitude`) (, `dot_product`)
+ * @version 0.4
+ * @date 2024-07-07
  */
 
 
@@ -13,7 +13,7 @@
 
 
 // return norm2 of vector v
-static double magnitude(vector v) {
+double magnitude(vector v) {
     return sqrt(v.x * v.x + v.y * v.y);
 }
 
