@@ -7,7 +7,7 @@
 
 <br>
 
-## Data Type
+## Data Type, Constant
 
 * ### Screen (`struct`)
 
@@ -25,7 +25,13 @@
     5. `MASS`   : 單擺的質量
     6. `NONE`   : 沒在輸入
 
+    - - -
+
+* ### PI (`constant`)
+
+
 <br>
+
 
 ## Function
 
