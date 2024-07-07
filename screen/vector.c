@@ -1,7 +1,7 @@
 /**
  * @file vector.cpp
  * @author IalvinchangI
- * @brief 定義 vector 運算 () (`vectors_angle`, `magnitude`) (, `dot_product`)
+ * @brief 定義 vector 運算 () (`vectors_angle`, `magnitude`) (`dot_product`)
  * @version 0.4
  * @date 2024-07-07
  */

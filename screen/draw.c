@@ -158,7 +158,7 @@ Screen draw_data_panel(Screen screen, char* theta, char* alpha, char* omega, cha
 
 
 /**
- * @brief 把 等待輸入的符號(I) 畫出來
+ * @brief 把 等待輸入的符號 畫出來
  * @attention screen_input 只是把要印在哪點出來而已
  * 
  * @param screen 螢幕物件
