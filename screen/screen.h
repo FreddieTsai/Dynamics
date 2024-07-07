@@ -26,6 +26,8 @@
     #include "screen_input_name.h"
     #include "PI.h"
 
+    extern unsigned short const INPUT_FIELD_LENGTH;
+
 
 
     // ======================== Function ========================

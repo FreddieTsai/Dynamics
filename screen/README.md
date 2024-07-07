@@ -29,6 +29,12 @@
 
 * ### PI (`constant`)
 
+    - - -
+
+* ### INPUT_FIELD_LENGTH (`constant`)
+
+    使用者能輸入的數字長度 (包含小數點)
+
 
 <br>
 
