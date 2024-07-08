@@ -2,16 +2,16 @@
  * @file show.cpp
  * @author IalvinchangI
  * @brief 把螢幕上的內容顯示出來 (`screen_show`) () ()
- * @version 0.1
- * @date 2024-07-04
+ * @version 0.2
+ * @date 2024-07-07
  */
 
 
 #include<stdio.h>  // printf
 #include<stdlib.h>  // system
 
-#include "__screen_object.h"  // Screen, screen_input_name.NONE
-#include "__draw.h"  // clean_screen, draw_info_panel
+#include "screen_object.h"  // Screen, screen_input_name.NONE
+#include "draw.h"  // clean_screen, draw_info_panel
 
 
 /**
@@ -24,6 +24,7 @@
 Screen screen_show(Screen screen) {
     // draw last part
     draw_info_panel(screen);
+    draw_screen_input(screen);
 
     // clean cmd
     system("CLS");
@@ -35,6 +36,9 @@ Screen screen_show(Screen screen) {
 
     // clean screen
     clean_screen(screen);
+
+    // clean input
+    // screen_input(screen, NONE);
 
     return screen;
 }

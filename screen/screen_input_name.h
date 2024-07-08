@@ -1,14 +1,14 @@
 /**
- * @file __screen_input_name.h
+ * @file screen_input_name.h
  * @author IalvinchangI
  * @brief 定義 `screen_input` 的參數
- * @version 0.3
- * @date 2024-07-04
+ * @version 0.4
+ * @date 2024-07-06
  */
 
 
-#ifndef __screen_input_name_H_
-    #define __screen_input_name_H_
+#ifndef screen_input_name_H_
+    #define screen_input_name_H_
 
     /**
      * @brief 適用於`screen_input`的參數
