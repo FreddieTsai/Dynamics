@@ -23,7 +23,7 @@
  */
 Screen screen_show(Screen screen) {
     // draw last part
-    draw_info_panel(screen, DEFAULT_MODE);
+    // draw_info_panel(screen, DEFAULT_MODE);
     draw_screen_input(screen);
 
     // clean cmd
