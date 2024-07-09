@@ -1,6 +1,5 @@
 #include <conio.h>  // for _getch()
 #include <ctype.h> // for toupper()
-#include <winnt.h>  // for HANDLE
 #include <windows.h>  // for Sleep()
 #include <cassert>  // for assert()
 #include <process.h>  // for _endthreadex()

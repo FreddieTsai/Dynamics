@@ -1,5 +1,4 @@
 #include <process.h>  // for _beginthreadex()
-#include <winnt.h>  // for HANDLE
 #include <windows.h>  // for Sleep()
 #include <cassert>  // for assert()
 #include <iostream>
@@ -92,7 +91,7 @@ int main()
         // lower the frequency of updating screen
         Sleep( 500L );
     }
-    
+
     program_info_msg << "program end\n";
     return 0;
 }
