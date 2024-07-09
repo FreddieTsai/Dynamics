@@ -1,15 +1,18 @@
-#include <conio.h>  // _getch()
-#include <ctype.h> // toupper()
-#include <winnt.h>  // HANDLE
-#include <windows.h>  // Sleep()
-#include <cassert>  // assert()
-#include <process.h>  // _endthreadex()
+#include <conio.h>  // for _getch()
+#include <ctype.h> // for toupper()
+#include <winnt.h>  // for HANDLE
+#include <windows.h>  // for Sleep()
+#include <cassert>  // for assert()
+#include <process.h>  // for _endthreadex()
 #include <iostream>
-#include <fstream>  // ofstream
+#include <fstream>  // for ofstream
+
+
 #include "..\screen\screen.h"
 #include "user.h"
 #include "physical_info.h"
 #include "..\calculator.h"
+
 
 using namespace std;
 
@@ -285,6 +288,8 @@ void insert_mode( pinput_info input_info )
     while ( !input_info->terminate_insertion_TF )
     {
         default_mode( input_info );
+
+        //lower the frequency of updating screen
         Sleep( 500L );
     }
 

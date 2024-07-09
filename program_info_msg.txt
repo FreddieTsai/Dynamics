@@ -18,3 +18,25 @@ program start
 program end
 program start
 program end
+user input thread start
+program paused
+program continue
+insert mode start
+***ERROR: enter 'W' or 'A' or 'T' but not in insert mode***
+***ERROR: invalid input***
+***ERROR: invalid input***
+***ERROR: invalid input***
+***ERROR: invalid input***
+***ERROR: enter 'W' or 'A' or 'T' but not in insert mode***
+***ERROR: invalid input***
+***ERROR: invalid input***
+***ERROR: invalid input***
+***ERROR: invalid input***
+***ERROR: invalid input***
+***ERROR: invalid input***
+***ERROR: invalid input***
+***ERROR: invalid input***
+program start
+program end
+program start
+program end
