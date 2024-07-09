@@ -21,7 +21,6 @@ int main()
 
     // make sure file "program_info_msg.txt" is created
     if ( !program_info_msg )
-        program_info_msg << "***ERROR: fail to create \"program_info_msg.txt\"***\n";
         return 1;
 
     program_info_msg << "program start\n";
