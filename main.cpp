@@ -18,7 +18,7 @@ int main()
     if ( !program_info_msg )
         return 1;
 
-    //program_info_msg << "program start\n";
+    program_info_msg << "program start\n";
 
     //initialize objects
     Screen screen = create_screen();
@@ -65,6 +65,6 @@ int main()
                 break;
         }
     }
-
+    program_info_msg << "program end\n";
     return 0;
 }

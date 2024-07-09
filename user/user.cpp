@@ -26,6 +26,8 @@ unsigned __stdcall user_input_thread( void *__input_info )
     if ( !program_info_msg )
         input_info->terminate_program_TF = true;
 
+    program_info_msg << "user input thread start\n";
+
     char key_input = 'D';
     while ( !input_info->terminate_program_TF )
     {
@@ -39,14 +41,17 @@ unsigned __stdcall user_input_thread( void *__input_info )
                 break;
 
             case 'C' :
+                program_info_msg << "program continue\n";
                 input_info->mode = 'D';
                 break;
 
             case 'P' :
+                program_info_msg << "program paused\n";
                 input_info->mode = 'P';
                 break;
 
             case 'I' :
+                program_info_msg << "insert mode start\n";
                 input_info->mode = 'I';
                 insert_mode( input_info );
                 break;
@@ -60,6 +65,7 @@ unsigned __stdcall user_input_thread( void *__input_info )
                 break;
         }
     }
+    program_info_msg << "user input thread end\n";
     _endthreadex( 0 );
     return 0;
 }
@@ -99,10 +105,12 @@ unsigned __stdcall insertion_thread( void *__input_info )
                 input_info->name = OMEGA;
                 program_info_msg << "inserting omega\n";
                 cin >> change_value;
+                input_info->name = NONE;
                 if ( cin ) {
                     physical_info->omega = change_value;
                 }
                 else {
+                    program_info_msg << name << " insert error\n";
                     err_msg << "omega must be a number\n";
                     cin.clear();
                     cin.ignore( 1024, '\n' );
@@ -113,10 +121,12 @@ unsigned __stdcall insertion_thread( void *__input_info )
                 input_info->name = ALPHA;
                 program_info_msg << "inserting alpha\n";
                 cin >> change_value;
+                input_info->name = NONE;
                 if ( cin ) {
                     physical_info->alpha = change_value;
                 }
                 else {
+                    program_info_msg << name << " insert error\n";
                     err_msg << "alpha must be a number\n";
                     cin.clear();
                     cin.ignore( 1024, '\n' );
@@ -127,15 +137,18 @@ unsigned __stdcall insertion_thread( void *__input_info )
                 input_info->name = LENGTH;
                 program_info_msg << "inserting length\n";
                 cin >> change_value;
+                input_info->name = NONE;
                 if ( cin ) {
                     if ( change_value != 0 ) {
                         physical_info->length = change_value;
                     }
                     else {
+                        program_info_msg << name << " insert error\n";
                         err_msg << "length must > 0\n";
                     }
                 }
                 else {
+                    program_info_msg << name << " insert error\n";
                     err_msg << "length must be a number\n";
                     cin.clear();
                     cin.ignore( 1024, '\n' );
@@ -146,10 +159,12 @@ unsigned __stdcall insertion_thread( void *__input_info )
                 input_info->name = MASS;
                 program_info_msg << "inserting mass\n";
                 cin >> change_value;
+                input_info->name = NONE;
                 if ( cin ) {
                     physical_info->mass = change_value;
                 }
                 else {
+                    program_info_msg << name << " insert error\n";
                     err_msg << "mass must be a number\n";
                     cin.clear();
                     cin.ignore( 1024, '\n' );
@@ -160,10 +175,12 @@ unsigned __stdcall insertion_thread( void *__input_info )
                 input_info->name = THETA;
                 program_info_msg << "inserting theta\n";
                 cin >> change_value;
+                input_info->name = NONE;
                 if ( cin ) {
                     physical_info->theta = change_value;
                 }
                 else {
+                    program_info_msg << name << " insert error\n";
                     err_msg << "theta must be a number\n";
                     cin.clear();
                     cin.ignore( 1024, '\n' );
@@ -181,6 +198,7 @@ unsigned __stdcall insertion_thread( void *__input_info )
                 break;
 
             default:
+                program_info_msg << " insert mode error\n";
                 err_msg << "invalid insertion\n";
                 input_info->name = NONE;
                 break;
@@ -206,7 +224,6 @@ void insert_mode( pinput_info input_info )
         input_info->terminate_insertion_TF = true;
         input_info->terminate_program_TF = true;
     }
-    program_info_msg << "insert mode start\n";
 
     Screen screen = input_info->screen;
     Screen tmp_screen = screen;
@@ -221,7 +238,6 @@ void insert_mode( pinput_info input_info )
         default_mode( input_info );
     }
 
-    program_info_msg << "insert mode end\n";
     input_info->terminate_insertion_TF = false;
 }
 
@@ -236,15 +252,6 @@ void pause_mode( pinput_info input_info )
 
 void default_mode( pinput_info input_info )
 {
-    ofstream err_msg( "err_msg.txt", ios::app );
-    ofstream program_info_msg( "program_info_msg.txt", ios::app );
-    if ( !err_msg ){
-        input_info->terminate_program_TF = true;
-    }
-    if ( !program_info_msg ){
-        input_info->terminate_program_TF = true;
-    }
-
     pphysical_info physical_info = input_info->physical_info;
 
     //calculate new physical info
@@ -262,7 +269,6 @@ void default_mode( pinput_info input_info )
         physical_info->length,
         physical_info->theta
     );
-    //program_info_msg << "calculation is done!\n";
 
     draw_and_show_screen( input_info );
 }
@@ -301,7 +307,6 @@ void draw_and_show_screen( pinput_info input_info )
         err_msg << "fail to draw data panel\n";
         screen = tmp_screen;
     }
-    //program_info_msg << "drawed data panel\n";
 
     screen = screen_input( screen, input_info->name );
     assert( screen != NULL );
@@ -309,7 +314,6 @@ void draw_and_show_screen( pinput_info input_info )
         err_msg << "fail to screen input\n";
         screen = tmp_screen;
     }
-    //program_info_msg << "screen inputed\n";
 
     screen  = draw_pendulum( screen, physical_info->theta, physical_info->length );
     assert( screen != NULL );
@@ -317,7 +321,6 @@ void draw_and_show_screen( pinput_info input_info )
         err_msg << "fail to draw pendulum\n";
         screen = tmp_screen;
     }
-    //program_info_msg << "drawed pendulum\n";
 
     if ( screen == NULL ) {
         screen_show(tmp_screen);
@@ -325,7 +328,6 @@ void draw_and_show_screen( pinput_info input_info )
     else {
         screen_show(screen);
     }
-    //program_info_msg << "screen showed\n";
 }
 
 /****************************  convert double to char*  *******************************/
