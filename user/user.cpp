@@ -4,6 +4,7 @@
 #include <cassert>  // assert()
 #include <process.h>  // _endthreadex()
 #include <iostream>
+#include <fstream>  // ofstream
 #include "user.h"
 #include "physical_info.h"
 #include "..\calculator.h"
@@ -16,6 +17,14 @@ const size_t DOUBLE_NUMBER_DIGITS = 32;  // maximun number of digits of physical
 unsigned __stdcall user_input_thread( void *__input_info )
 {
     pinput_info input_info = static_cast<pinput_info>(__input_info);
+
+    ofstream err_msg( "err_msg.txt", ios::app );
+    ofstream program_info_msg( "program_info_msg.txt", ios::app );
+    if ( !err_msg )
+        input_info->terminate_program_TF = true;
+    if ( !program_info_msg )
+        input_info->terminate_program_TF = true;
+
     char key_input = 'D';
     while ( !input_info->terminate_program_TF )
     {
@@ -25,21 +34,7 @@ unsigned __stdcall user_input_thread( void *__input_info )
         switch ( key_input )
         {
             case 'E' : 
-                cout << "exit the program? \'y\' or \'n\'\n";
-                char ch;
-                while ( true )
-                {
-                    ch = _getch();
-                    if ( ch == 'y' || ch == 'n' ) {
-                        break;
-                    }
-                }
-                if ( ch == 'y' ) {
-                    break;
-                }
-                else if ( ch == 'n' ) {
-                    continue;
-                }
+                input_info->terminate_program_TF = true;
                 break;
 
             case 'C' :
@@ -56,15 +51,14 @@ unsigned __stdcall user_input_thread( void *__input_info )
                 break;
 
             case 'W' : case 'A' : case 'T' :
-                cout << "enter \'I\' to insert values of physical information\n";
+                err_msg << "enter \'I\' to insert values of physical information\n";
                 break;
 
             default :
-                cout << "invalid input\n";
+                err_msg << "invalid input\n";
                 break;
         }
     }
-    input_info->terminate_program_TF = true;
     _endthreadex( 0 );
     return 0;
 }
@@ -74,13 +68,25 @@ unsigned __stdcall user_input_thread( void *__input_info )
 unsigned __stdcall insertion_thread( void *__input_info )
 {
     pinput_info input_info = static_cast<pinput_info>(__input_info);
+
+    ofstream err_msg( "err_msg.txt", ios::app );
+    ofstream program_info_msg( "program_info_msg.txt", ios::app );
+    if ( !err_msg ){
+        input_info->terminate_insertion_TF = true;
+        input_info->terminate_program_TF = true;
+    }
+    if ( !program_info_msg ){
+        input_info->terminate_insertion_TF = true;
+        input_info->terminate_program_TF = true;
+    }
+
     pphysical_info physical_info = input_info->physical_info;
     Screen screen = input_info->screen;
     Screen tmp_screen = screen;
     screen_input_name name;
     char key_input;
     
-    while ( true )
+    while ( (!input_info->terminate_program_TF) && (!input_info->terminate_insertion_TF) )
     {
         key_input = _getch();
         key_input = toupper( key_input );
@@ -95,9 +101,10 @@ unsigned __stdcall insertion_thread( void *__input_info )
                     input_info->name = OMEGA;
                 }
                 else {
-                    cout << "omega must be a number\n";
+                    err_msg << "omega must be a number\n";
                     cin.clear();
                     cin.ignore( 1024, '\n' );
+                    input_info->name = NONE;
                 }
                 break;
             
@@ -108,22 +115,30 @@ unsigned __stdcall insertion_thread( void *__input_info )
                     input_info->name = ALPHA;
                 }
                 else {
-                    cout << "alpha must be a number\n";
+                    err_msg << "alpha must be a number\n";
                     cin.clear();
                     cin.ignore( 1024, '\n' );
+                    input_info->name = NONE;
                 }
                 break;
 
             case 'L' :
                 cin >> change_value;
                 if ( cin ) {
-                    physical_info->length = change_value;
-                    input_info->name = LENGTH;
+                    if ( change_value != 0 ) {
+                        physical_info->length = change_value;
+                        input_info->name = LENGTH;
+                    }
+                    else {
+                        err_msg << "length must > 0\n";
+                        input_info->name = NONE;
+                    }
                 }
                 else {
-                    cout << "length must be a number\n";
+                    err_msg << "length must be a number\n";
                     cin.clear();
                     cin.ignore( 1024, '\n' );
+                    input_info->name = NONE;
                 }
                 break;
             
@@ -134,9 +149,10 @@ unsigned __stdcall insertion_thread( void *__input_info )
                     input_info->name = MASS;
                 }
                 else {
-                    cout << "mass must be a number\n";
+                    err_msg << "mass must be a number\n";
                     cin.clear();
                     cin.ignore( 1024, '\n' );
+                    input_info->name = NONE;
                 }
                 break;
 
@@ -147,41 +163,29 @@ unsigned __stdcall insertion_thread( void *__input_info )
                     input_info->name = THETA;
                 }
                 else {
-                    cout << "theta must be a number\n";
+                    err_msg << "theta must be a number\n";
                     cin.clear();
                     cin.ignore( 1024, '\n' );
+                    input_info->name = NONE;
                 }
 
-            case 'C' : case 'E' : 
+            case 'C' :
+                input_info->terminate_insertion_TF = true;
+                input_info->name = NONE;
+                break;
+            
+            case 'E' :
+                input_info->terminate_insertion_TF = true;
+                input_info->terminate_program_TF = true;
                 input_info->name = NONE;
                 break;
 
             default:
-                cout << "invalid input\n";
+                err_msg << "invalid input\n";
                 input_info->name = NONE;
                 break;
         }
-
-        if ( key_input == 'C' ) {
-            break;
-        }
-        if ( key_input == 'E' ) {
-            cout << "exit the program? \'y\' or \'n\'\n";
-                char ch;
-                while ( true )
-                {
-                    ch = _getch();
-                    if ( ch == 'y' || ch == 'n' ) {
-                        break;
-                    }
-                }
-                if ( ch == 'y' ) {
-                    input_info->terminate_program_TF = true;
-                }
-            break;
-        }
     }
-    input_info->terminate_insertion_TF = true;
     input_info->mode = 'D';
     _endthreadex( 0 );
     return 0;
@@ -191,6 +195,17 @@ unsigned __stdcall insertion_thread( void *__input_info )
 
 void insert_mode( pinput_info input_info )
 {
+    ofstream err_msg( "err_msg.txt", ios::app );
+    ofstream program_info_msg( "program_info_msg.txt", ios::app );
+    if ( !err_msg ){
+        input_info->terminate_insertion_TF = true;
+        input_info->terminate_program_TF = true;
+    }
+    if ( !program_info_msg ){
+        input_info->terminate_insertion_TF = true;
+        input_info->terminate_program_TF = true;
+    }
+
     Screen screen = input_info->screen;
     Screen tmp_screen = screen;
 
@@ -203,7 +218,7 @@ void insert_mode( pinput_info input_info )
     {
         screen = screen_input( screen, input_info->name );
         if ( screen == NULL ) {
-            cout << "fail to screen input\n";
+            err_msg << "fail to screen input\n";
             screen = tmp_screen;
         }
         draw_and_show_screen( input_info );
@@ -221,6 +236,15 @@ void pause_mode( pinput_info input_info )
 
 void default_mode( pinput_info input_info )
 {
+    ofstream err_msg( "err_msg.txt", ios::app );
+    ofstream program_info_msg( "program_info_msg.txt", ios::app );
+    if ( !err_msg ){
+        input_info->terminate_program_TF = true;
+    }
+    if ( !program_info_msg ){
+        input_info->terminate_program_TF = true;
+    }
+
     pphysical_info physical_info = input_info->physical_info;
 
     //calculate new physical info
@@ -238,7 +262,7 @@ void default_mode( pinput_info input_info )
         physical_info->length,
         physical_info->theta
     );
-    cout << "calculation is done!\n";
+    program_info_msg << "calculation is done!\n";
 
     draw_and_show_screen( input_info );
 }
@@ -247,6 +271,15 @@ void default_mode( pinput_info input_info )
 
 void draw_and_show_screen( pinput_info input_info )
 {
+    ofstream err_msg( "err_msg.txt", ios::app );
+    ofstream program_info_msg( "program_info_msg.txt", ios::app );
+    if ( !err_msg ){
+        input_info->terminate_program_TF = true;
+    }
+    if ( !program_info_msg ){
+        input_info->terminate_program_TF = true;
+    }
+
     Screen screen = input_info->screen;
     Screen tmp_screen = screen;
     assert( screen != NULL );
@@ -265,18 +298,18 @@ void draw_and_show_screen( pinput_info input_info )
     );
     assert( screen != NULL );
     if (screen == NULL) {
-        cout << "fail to draw data panel\n";
+        err_msg << "fail to draw data panel\n";
         screen = tmp_screen;
     }
-    cout << "drawed data panel\n";
+    program_info_msg << "drawed data panel\n";
 
     screen  = draw_pendulum( screen, physical_info->theta, physical_info->length );
     assert( screen != NULL );
     if ( screen == NULL ) {
-        cout << "fail to draw pendulum\n";
+        err_msg << "fail to draw pendulum\n";
         screen = tmp_screen;
     }
-    cout << "drawed pendulum\n";
+    program_info_msg << "drawed pendulum\n";
 
     if ( screen == NULL ) {
         screen_show(tmp_screen);
@@ -284,14 +317,14 @@ void draw_and_show_screen( pinput_info input_info )
     else {
         screen_show(screen);
     }
-    cout << "screen showed\n";
+    program_info_msg << "screen showed\n";
 }
 
 /****************************  convert double to char*  *******************************/
 
 char *double_to_char( char *buffer, double double_value, size_t sz )
 {
-    snprintf( buffer, sz, "%f", double_value );
+    snprintf( buffer, sz-1, "%f", double_value );
     for ( size_t i = 0; i < sz; i++ ) {
         if ( !((buffer[i] >= '0' && buffer[i] <= '9') || buffer[i] == '.') ) {
             buffer[i] = '0';

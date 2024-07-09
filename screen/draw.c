@@ -6,7 +6,7 @@
  * @date 2024-07-07
  */
 
-
+#include <stdio.h>  // printf()
 #include<stdlib.h>  // NULL
 #include<string.h>  // strlen
 #include<math.h>  // cos, sin, abs

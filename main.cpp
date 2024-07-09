@@ -2,6 +2,7 @@
 #include <winnt.h>  // HANDLE
 #include <cassert>  // assert()
 #include <iostream>
+#include <fstream>  // ofstream
 #include "screen\screen.h"
 #include "screen\screen_input_name.h"
 #include "user\user.h"
@@ -11,7 +12,14 @@ using namespace std;
 
 int main()
 {
-    cout << "program start\n";
+    ofstream err_msg( "err_msg.txt", ios::app );
+    ofstream program_info_msg( "program_info_msg.txt", ios::app );
+    if ( !err_msg )
+        return 1;
+    if ( !program_info_msg )
+        return 1;
+
+    program_info_msg << "program start\n";
 
     //initialize objects
     Screen screen = create_screen();
@@ -54,7 +62,7 @@ int main()
 
             default :
                 default_mode( input_info );
-                cout << "invalid mode\n";
+                err_msg << "invalid mode\n";
                 break;
         }
     }
