@@ -56,3 +56,8 @@ dkms.conf
 # vscode
 *.code-workspace
 .vscode/
+
+
+# log
+program_info_msg.txt
+err_msg.txt
