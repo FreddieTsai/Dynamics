@@ -2,8 +2,8 @@
  * @file screen_object.h
  * @author IalvinchangI
  * @brief 定義 `Screen`, `Layout`，引入 `screen_input_name`
- * @version 0.6
- * @date 2024-07-07
+ * @version 0.7
+ * @date 2024-07-09
  */
 
 
@@ -38,6 +38,7 @@
         Layout layout;                  // 排版
         bool empty_TF;                  // 螢幕是否是空的
         screen_input_name input_name;   // 目前正在輸入的 data格
+        unsigned char flash;            // 輸入的閃爍
         int pendulum_radius;            // 單擺的寬度半徑
     } raw_screen;
 
