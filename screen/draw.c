@@ -1,21 +1,21 @@
 /**
  * @file draw.cpp
  * @author IalvinchangI
- * @brief 畫各個面板 (`clean_screen`, `draw_pendulum`, `draw_data_panel`, `screen_input`) (`draw_info_panel`, `draw_screen_input`) ()
- * @version 0.4
- * @date 2024-07-07
+ * @brief 畫各個面板 (`clean_screen`, `draw_pendulum`, `draw_data_panel`, `screen_input`) (`draw_info_panel`, `draw_screen_input`) (`flash_TF`)
+ * @version 0.5
+ * @date 2024-07-09
  */
 
 
 #include<stdlib.h>  // NULL
 #include<string.h>  // strlen
 #include<math.h>  // cos, sin, abs
-#include<stdbool.h>  // true, false
+#include<stdbool.h>  // bool, true, false
 
 #include "screen_object.h"  // Screen, Layout, screen_input_name
 #include "vector.h"  // position, rectangle
 #include "graph.h"  // all
-
+static bool flash_TF(Screen screen);
 
 
 // ================================== constant ==================================
@@ -33,7 +33,6 @@ static char *data_panel_contents[5] = {
     STR_LENGTH "              "     STR_EQUAL, 
     STR_MASS   "                "   STR_EQUAL
 };
-// static int data_panel_content_length = strlen(data_panel_contents[0]);
 
 static char *info_content = "insert"   STR_COLON "I"           STR_SMALL_SPACE
                             STR_THETA  STR_COLON "T"           STR_SMALL_SPACE
@@ -43,7 +42,6 @@ static char *info_content = "insert"   STR_COLON "I"           STR_SMALL_SPACE
                             "continue" STR_COLON "C"           STR_LARGE_SPACE
                             "end"      STR_COLON "E | ctrl+c"
 ;
-// static int info_content_length = strlen(info_content);
 
 
 /**
@@ -67,6 +65,10 @@ unsigned short const SCREEN_MINIMUM_WIDTH = 110;  // 110
 // the minimum height the screen can have
 //unsigned short const SCREEN_MINIMUM_HEIGHT = DATA_PANEL_HEIGHT + 2 + INFO_PANEL_HEIGHT;  // 16
 unsigned short const SCREEN_MINIMUM_HEIGHT = 16;  // 16
+
+
+// the frequncy that screen_input flash
+static unsigned char const INPUT_FLASH_FREQUENCY = 32;
 
 
 
@@ -166,7 +168,7 @@ Screen draw_data_panel(Screen screen, char* theta, char* alpha, char* omega, cha
  * @return 傳入的螢幕物件 or NULL(執行失敗) 
  */
 Screen draw_screen_input(Screen screen) {
-    if (screen -> input_name != NONE) {  // print input?
+    if (screen -> input_name != NONE && flash_TF(screen)) {  // print input?
         position current_pos = {
             screen -> layout.data_panel.x + 1 + DATA_PANEL_WIDTH - INPUT_FIELD_LENGTH, 
             screen -> layout.data_panel.y + 1 + screen -> input_name * 2, 
@@ -215,5 +217,19 @@ Screen draw_info_panel(Screen screen) {
  */
 Screen screen_input(Screen screen, screen_input_name name) {
     screen -> input_name = name;
+    if (name == NONE) {
+        screen -> flash = 0;
+    }
     return screen;
+}
+
+
+// return wheather to display the screen_input(flash) and update the value of flash
+static bool flash_TF(Screen screen) {
+    // check
+    bool output = screen -> flash & INPUT_FLASH_FREQUENCY;
+    // update
+    screen -> flash++;
+    // output
+    return output;
 }
