@@ -6,7 +6,7 @@
  * @date 2024-07-07
  */
 
-#include <stdio.h>  // printf()
+
 #include<stdlib.h>  // NULL
 #include<string.h>  // strlen
 #include<math.h>  // cos, sin, abs
@@ -104,16 +104,16 @@ Screen clean_screen(Screen screen) {
  */
 Screen draw_pendulum(Screen screen, double theta, double length) {
     position end_pos = {
-        screen -> layout.pivot.x + (int)( cos(theta) * length), 
-        screen -> layout.pivot.y + (int)(-sin(theta) * length)
+        screen -> layout.pivot.x + (int)(cos(theta) * length), 
+        screen -> layout.pivot.y + (int)(sin(theta) * length)
     };
 
     // body
     print_line(screen, screen -> layout.pivot, end_pos, screen -> pendulum_radius, '@', screen -> layout.pendulum_boundary);
 
     // start, end
-    print_solid_circle(screen, screen -> layout.pivot, screen -> pendulum_radius, 'O', screen -> layout.pendulum_boundary);
     print_solid_circle(screen, end_pos               , screen -> pendulum_radius, '@', screen -> layout.pendulum_boundary);
+    print_solid_circle(screen, screen -> layout.pivot, screen -> pendulum_radius, 'O', screen -> layout.pendulum_boundary);
 
     screen -> empty_TF = false;
     return screen;
@@ -132,7 +132,6 @@ Screen draw_pendulum(Screen screen, double theta, double length) {
  * @return 傳入的螢幕物件 or NULL(執行失敗)
  */
 Screen draw_data_panel(Screen screen, char* theta, char* alpha, char* omega, char* length, char* mass) {
-    
     char *input_data[5] = {theta, alpha, omega, length, mass};
     int data_panel_content_length = strlen(data_panel_contents[0]);
     position current_pos = {
