@@ -4,7 +4,6 @@
 #include <iostream>
 #include <fstream>  // ofstream
 #include "screen\screen.h"
-#include "screen\screen_input_name.h"
 #include "user\user.h"
 #include "user\physical_info.h"
 
@@ -19,7 +18,7 @@ int main()
     if ( !program_info_msg )
         return 1;
 
-    program_info_msg << "program start\n";
+    //program_info_msg << "program start\n";
 
     //initialize objects
     Screen screen = create_screen();
@@ -30,7 +29,7 @@ int main()
     bool terminate_insertion_TF = false;
     char mode = 'D';
     screen_input_name name = NONE;
-    physical_info __physical_info{ 1.0, 1.0, 1.0, 1.0, 1.0 };
+    physical_info __physical_info{ 20.0, 1.0, 1.0, 20.0, 1.0 };
     pphysical_info physical_info = &__physical_info;
     
     input_info __input_info{
