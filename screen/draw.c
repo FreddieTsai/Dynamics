@@ -68,7 +68,7 @@ unsigned short const SCREEN_MINIMUM_HEIGHT = 16;  // 16
 
 
 // the frequncy that screen_input flash
-static unsigned char const INPUT_FLASH_FREQUENCY = 32;
+static unsigned char const INPUT_FLASH_FREQUENCY = 16;
 
 
 
