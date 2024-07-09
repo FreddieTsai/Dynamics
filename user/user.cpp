@@ -289,7 +289,7 @@ void insert_mode( pinput_info input_info )
         default_mode( input_info );
 
         //lower the frequency of updating screen
-        Sleep( 500L );
+        Sleep( 10L );
     }
 
     
