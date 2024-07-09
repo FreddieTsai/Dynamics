@@ -7,7 +7,6 @@
  */
 
 
-#include<stdio.h>
 #include<stdlib.h>  // NULL
 #include<string.h>  // strlen
 #include<math.h>  // cos, sin, abs
