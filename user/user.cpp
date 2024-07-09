@@ -1,6 +1,7 @@
 #include <conio.h>  // _getch()
 #include <ctype.h> // toupper()
 #include <winnt.h>  // HANDLE
+#include <windows.h>  // Sleep()
 #include <cassert>  // assert()
 #include <process.h>  // _endthreadex()
 #include <iostream>
@@ -12,23 +13,34 @@
 
 using namespace std;
 
-const size_t DOUBLE_NUMBER_DIGITS = 32;  // maximun number of digits of physical variables
 
 /********************  change mode according to user input  ***********************/
+
+
+/**
+ * @brief thread waiting for user inputs
+ * @param pinput_info input_info
+ */
 unsigned __stdcall user_input_thread( void *__input_info )
 {
     pinput_info input_info = static_cast<pinput_info>(__input_info);
 
-    ofstream err_msg( "err_msg.txt", ios::app );
+
+    // create fostream of err_msg and program_info_msg
     ofstream program_info_msg( "program_info_msg.txt", ios::app );
-    if ( !err_msg )
-        input_info->terminate_program_TF = true;
+
+
+    // make sure file "program_info_msg.txt" is created
     if ( !program_info_msg )
         input_info->terminate_program_TF = true;
 
+
     program_info_msg << "user input thread start\n";
 
+
+    // before user enter a key, key_input should be under default mode
     char key_input = 'D';
+
     while ( !input_info->terminate_program_TF )
     {
         key_input = _getch();
@@ -57,11 +69,12 @@ unsigned __stdcall user_input_thread( void *__input_info )
                 break;
 
             case 'W' : case 'A' : case 'T' :
-                err_msg << "enter \'I\' to insert values of physical information\n";
+                program_info_msg << "***ERROR: enter \'W\' or \'A\' or \'T\'"
+                                 << " but not in insert mode***\n";
                 break;
 
             default :
-                err_msg << "invalid input\n";
+                program_info_msg << "***ERROR: invalid input***\n";
                 break;
         }
     }
@@ -70,29 +83,40 @@ unsigned __stdcall user_input_thread( void *__input_info )
     return 0;
 }
 
+
 /******************************  insertion thread  ********************************/
 
+
+/**
+ * @brief thread waiting for user inputs in insert_mode
+ * @param pinput_info input_info
+ */
 unsigned __stdcall insertion_thread( void *__input_info )
 {
     pinput_info input_info = static_cast<pinput_info>(__input_info);
 
-    ofstream err_msg( "err_msg.txt", ios::app );
+
+    // create fostream of err_msg and program_info_msg
     ofstream program_info_msg( "program_info_msg.txt", ios::app );
-    if ( !err_msg ){
-        input_info->terminate_insertion_TF = true;
+
+
+    // make sure file "program_info_msg.txt" is created
+    if ( !program_info_msg )
         input_info->terminate_program_TF = true;
-    }
-    if ( !program_info_msg ){
-        input_info->terminate_insertion_TF = true;
-        input_info->terminate_program_TF = true;
-    }
+
+
     program_info_msg << "insertion thread start\n";
 
+
+    // copy data from input_info
     pphysical_info physical_info = input_info->physical_info;
     Screen screen = input_info->screen;
     Screen tmp_screen = screen;
     screen_input_name name;
+
+
     char key_input;
+
     while ( (!input_info->terminate_program_TF) && (!input_info->terminate_insertion_TF) )
     {
         key_input = _getch();
@@ -106,12 +130,13 @@ unsigned __stdcall insertion_thread( void *__input_info )
                 program_info_msg << "inserting omega\n";
                 cin >> change_value;
                 input_info->name = NONE;
+
+                // user input is valid for OMEGA
                 if ( cin ) {
                     physical_info->omega = change_value;
                 }
                 else {
-                    program_info_msg << name << " insert error\n";
-                    err_msg << "omega must be a number\n";
+                    program_info_msg << "***ERROR: OMEGA inserted is invalid***\n";
                     cin.clear();
                     cin.ignore( 1024, '\n' );
                 }
@@ -122,12 +147,13 @@ unsigned __stdcall insertion_thread( void *__input_info )
                 program_info_msg << "inserting alpha\n";
                 cin >> change_value;
                 input_info->name = NONE;
+
+                // user input is valid for ALPHA
                 if ( cin ) {
                     physical_info->alpha = change_value;
                 }
                 else {
-                    program_info_msg << name << " insert error\n";
-                    err_msg << "alpha must be a number\n";
+                    program_info_msg << "***ERROR: ALPHA inserted is invalid***\n";
                     cin.clear();
                     cin.ignore( 1024, '\n' );
                 }
@@ -138,18 +164,23 @@ unsigned __stdcall insertion_thread( void *__input_info )
                 program_info_msg << "inserting length\n";
                 cin >> change_value;
                 input_info->name = NONE;
+
+                // user input is valid for LENGTH (the type is double),
+                // but not assure the input is not 0
                 if ( cin ) {
+
+                    // length can't be 0
                     if ( change_value != 0 ) {
                         physical_info->length = change_value;
                     }
+
+                    // when length is 0
                     else {
-                        program_info_msg << name << " insert error\n";
-                        err_msg << "length must > 0\n";
+                        program_info_msg << "***ERROR: length inserted is 0***\n";
                     }
                 }
                 else {
-                    program_info_msg << name << " insert error\n";
-                    err_msg << "length must be a number\n";
+                    program_info_msg << "***ERROR: LENGTH inserted is invalid***\n";
                     cin.clear();
                     cin.ignore( 1024, '\n' );
                 }
@@ -160,12 +191,13 @@ unsigned __stdcall insertion_thread( void *__input_info )
                 program_info_msg << "inserting mass\n";
                 cin >> change_value;
                 input_info->name = NONE;
+
+                // user input is valid for MASS
                 if ( cin ) {
                     physical_info->mass = change_value;
                 }
                 else {
-                    program_info_msg << name << " insert error\n";
-                    err_msg << "mass must be a number\n";
+                    program_info_msg << "***ERROR: MASS inserted is invalid***\n";
                     cin.clear();
                     cin.ignore( 1024, '\n' );
                 }
@@ -176,21 +208,26 @@ unsigned __stdcall insertion_thread( void *__input_info )
                 program_info_msg << "inserting theta\n";
                 cin >> change_value;
                 input_info->name = NONE;
+
+                // user input is valid for THETA
                 if ( cin ) {
                     physical_info->theta = change_value;
                 }
                 else {
-                    program_info_msg << name << " insert error\n";
-                    err_msg << "theta must be a number\n";
+                    program_info_msg << "***ERROR: THETA inserted is invalid***\n";
                     cin.clear();
                     cin.ignore( 1024, '\n' );
                 }
 
+
+            // jump out of insert_mode
             case 'C' :
                 input_info->terminate_insertion_TF = true;
                 input_info->name = NONE;
                 break;
             
+
+            // jump out of insert_mode and terminate the program
             case 'E' :
                 input_info->terminate_insertion_TF = true;
                 input_info->terminate_program_TF = true;
@@ -198,63 +235,95 @@ unsigned __stdcall insertion_thread( void *__input_info )
                 break;
 
             default:
-                program_info_msg << " insert mode error\n";
-                err_msg << "invalid insertion\n";
-                input_info->name = NONE;
+                program_info_msg << "***ERROR: input in insert_mode is invalid***\n";
                 break;
         }
     }
+
+    // change mode to default_mode when insertion is done
     input_info->mode = 'D';
+
+
     program_info_msg << "insertion thread end\n";
     _endthreadex( 0 );
     return 0;
 }
 
+
 /***************************  insert mode  *********************************************/
 
+
+/**
+ * @brief insert_mode
+ * @param pinput_info input_info
+ */
 void insert_mode( pinput_info input_info )
 {
-    ofstream err_msg( "err_msg.txt", ios::app );
-    ofstream program_info_msg( "program_info_msg.txt", ios::app );
-    if ( !err_msg ){
-        input_info->terminate_insertion_TF = true;
-        input_info->terminate_program_TF = true;
-    }
-    if ( !program_info_msg ) {
-        input_info->terminate_insertion_TF = true;
-        input_info->terminate_program_TF = true;
-    }
 
+    // create fostream of err_msg and program_info_msg
+    ofstream program_info_msg( "program_info_msg.txt", ios::app );
+
+
+    // make sure file "program_info_msg.txt" is created
+    if ( !program_info_msg )
+        input_info->terminate_program_TF = true;
+
+
+    // copy data from input_info
     Screen screen = input_info->screen;
     Screen tmp_screen = screen;
 
+
+    // create a thread waiting user inputs in insert_mode
     unsigned threadID;
     HANDLE hthread = (HANDLE)_beginthreadex(
         NULL, 0, insertion_thread, input_info, 0, &threadID
     );
 
+
+    // while waiting user input, show screen in default way
     while ( !input_info->terminate_insertion_TF )
     {
         default_mode( input_info );
+        Sleep( 500L );
     }
 
+    
+    // set up terminate_insertion_TF to 'false' after insertion is done
     input_info->terminate_insertion_TF = false;
 }
 
 /********************************  pause mode  *****************************************/
 
+
+/**
+ * @brief pause_mode, show screen but not update the values of
+ * @brief physical variables
+ * 
+ * @param pinput_info input_info
+ */
 void pause_mode( pinput_info input_info )
 {
     draw_and_show_screen( input_info );   
 }
 
+
 /***********************************  default mode  **********************************/
 
+
+/**
+ * @brief default_mode, update values of physical variables
+ * @brief and show screen
+ * 
+ * @param pinput_info input_info
+ */
 void default_mode( pinput_info input_info )
 {
+
     pphysical_info physical_info = input_info->physical_info;
 
-    //calculate new physical info
+
+    //calculate new  values of physical variables
     physical_info->theta += calculateDegree(
         physical_info->length,
         physical_info->theta
@@ -273,25 +342,37 @@ void default_mode( pinput_info input_info )
     draw_and_show_screen( input_info );
 }
 
+
 /********************************  draw and show screen  *******************************/
 
+
+/**
+ * @brief draw and show screen
+ * @param pinput_info input_info
+ */
 void draw_and_show_screen( pinput_info input_info )
 {
-    ofstream err_msg( "err_msg.txt", ios::app );
+    // create fostream of err_msg and program_info_msg
     ofstream program_info_msg( "program_info_msg.txt", ios::app );
-    if ( !err_msg ){
-        input_info->terminate_program_TF = true;
-    }
-    if ( !program_info_msg ){
-        input_info->terminate_program_TF = true;
-    }
 
+
+    // make sure file "program_info_msg.txt" is created
+    if ( !program_info_msg )
+        input_info->terminate_program_TF = true;
+
+
+    // copy data form input_info
     Screen screen = input_info->screen;
+
+    // tmp_screen is a backup of screen when draw tools return NULL to screen
     Screen tmp_screen = screen;
     assert( screen != NULL );
 
     pphysical_info physical_info = input_info->physical_info;
 
+
+    // copy the values of physical variables into a char array
+    // and use them to draw data panel
     char char_theta[32], char_alpha[32], char_omega[32], char_length[32], char_mass[32];
 
     screen = draw_data_panel(
@@ -304,34 +385,52 @@ void draw_and_show_screen( pinput_info input_info )
     );
     assert( screen != NULL );
     if (screen == NULL) {
-        err_msg << "fail to draw data panel\n";
+        program_info_msg << "***ERROR: fail to draw data panel***\n";
         screen = tmp_screen;
     }
 
+
+    // show which physical variable is waiting for user input or none of them
     screen = screen_input( screen, input_info->name );
     assert( screen != NULL );
     if ( screen == NULL ) {
-        err_msg << "fail to screen input\n";
+        program_info_msg << "***ERROR: fail to screen input***\n";
         screen = tmp_screen;
     }
 
+
+    // draw pendulum
     screen  = draw_pendulum( screen, physical_info->theta, physical_info->length );
     assert( screen != NULL );
     if ( screen == NULL ) {
-        err_msg << "fail to draw pendulum\n";
+        program_info_msg << "***ERROR: fail to draw pendulum***\n";
         screen = tmp_screen;
     }
 
+
+    // show screen
     if ( screen == NULL ) {
         screen_show(tmp_screen);
+        program_info_msg << "***ERROR: screen is NULL***\n";
     }
     else {
         screen_show(screen);
     }
 }
 
+
 /****************************  convert double to char*  *******************************/
 
+
+/**
+ * @brief copy the value of a double into a char array
+ * 
+ * @param char *buffer : target char array
+ * @param double double_value
+ * @param size_t sz : size of target char array
+ * 
+ * @return target char array
+ */
 char *double_to_char( char *buffer, double double_value, size_t sz )
 {
     snprintf( buffer, sz-1, "%f", double_value );
