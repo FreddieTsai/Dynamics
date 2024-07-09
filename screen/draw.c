@@ -63,9 +63,11 @@ unsigned short const INFO_LENGTH = 108;
 unsigned short const INFO_PANEL_HEIGHT = 3;
 
 // the minimum width the screen can have
-unsigned short const SCREEN_MINIMUM_WIDTH = INFO_LENGTH + 2;  // 110
+//unsigned short const SCREEN_MINIMUM_WIDTH = INFO_LENGTH + 2;  // 110
+unsigned short const SCREEN_MINIMUM_WIDTH = 110;  // 110
 // the minimum height the screen can have
-unsigned short const SCREEN_MINIMUM_HEIGHT = DATA_PANEL_HEIGHT + 2 + INFO_PANEL_HEIGHT;  // 16
+//unsigned short const SCREEN_MINIMUM_HEIGHT = DATA_PANEL_HEIGHT + 2 + INFO_PANEL_HEIGHT;  // 16
+unsigned short const SCREEN_MINIMUM_HEIGHT = 16;  // 16
 
 
 
@@ -131,6 +133,7 @@ Screen draw_pendulum(Screen screen, double theta, double length) {
  * @return 傳入的螢幕物件 or NULL(執行失敗)
  */
 Screen draw_data_panel(Screen screen, char* theta, char* alpha, char* omega, char* length, char* mass) {
+    
     char *input_data[5] = {theta, alpha, omega, length, mass};
     int data_panel_content_length = strlen(data_panel_contents[0]);
     position current_pos = {
