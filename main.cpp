@@ -1,5 +1,6 @@
 #include <process.h>  // _beginthreadex()
 #include <winnt.h>  // HANDLE
+#include <windows.h>  // Sleep()
 #include <cassert>  // assert()
 #include <iostream>
 #include <fstream>  // ofstream
@@ -64,6 +65,7 @@ int main()
                 err_msg << "invalid mode\n";
                 break;
         }
+        Sleep( 500L );
     }
     program_info_msg << "program end\n";
     return 0;

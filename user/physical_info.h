@@ -1,6 +1,8 @@
 #ifndef PHYSICAL_INFO_H
     #define PHYSICAL_INFO_H
 
+    const size_t DOUBLE_NUMBER_DIGITS = 32;  // maximun number of digits of physical variables
+
     /**
      * @param theta
      * @param alpha
