@@ -7,13 +7,19 @@
 #include <fstream>  // for ofstream
 
 
-#include "..\screen\screen.h"
-#include "user.h"
-#include "physical_info.h"
 #include "..\calculator.h"
+#include "user.h"
+#include "input_info.h"
 
 
 using namespace std;
+
+// log file ( defined in main.cpp )
+extern string log_file_name;
+extern ofstream program_info_msg;
+
+// period of updating screen with ms ( defined in main.cpp )
+extern const long SCREEN_UPDATE_PERIOD;
 
 
 /********************  change mode according to user input  ***********************/
@@ -25,16 +31,9 @@ using namespace std;
  */
 unsigned __stdcall user_input_thread( void *__input_info )
 {
+
+    // cast input_info from "void *" to "pinput_info"
     pinput_info input_info = static_cast<pinput_info>(__input_info);
-
-
-    // create fostream of err_msg and program_info_msg
-    ofstream program_info_msg( "program_info_msg.txt", ios::app );
-
-
-    // make sure file "program_info_msg.txt" is created
-    if ( !program_info_msg )
-        input_info->terminate_program_TF = true;
 
 
     program_info_msg << "user input thread start\n";
@@ -95,16 +94,9 @@ unsigned __stdcall user_input_thread( void *__input_info )
  */
 unsigned __stdcall insertion_thread( void *__input_info )
 {
+
+    // cast input_info from "void *" to "pinput_info"
     pinput_info input_info = static_cast<pinput_info>(__input_info);
-
-
-    // create fostream of err_msg and program_info_msg
-    ofstream program_info_msg( "program_info_msg.txt", ios::app );
-
-
-    // make sure file "program_info_msg.txt" is created
-    if ( !program_info_msg )
-        input_info->terminate_program_TF = true;
 
 
     program_info_msg << "insertion thread start\n";
@@ -262,15 +254,6 @@ unsigned __stdcall insertion_thread( void *__input_info )
 void insert_mode( pinput_info input_info )
 {
 
-    // create fostream of err_msg and program_info_msg
-    ofstream program_info_msg( "program_info_msg.txt", ios::app );
-
-
-    // make sure file "program_info_msg.txt" is created
-    if ( !program_info_msg )
-        input_info->terminate_program_TF = true;
-
-
     // copy data from input_info
     Screen screen = input_info->screen;
     Screen tmp_screen = screen;
@@ -289,7 +272,7 @@ void insert_mode( pinput_info input_info )
         default_mode( input_info );
 
         //lower the frequency of updating screen
-        Sleep( 10L );
+        Sleep( SCREEN_UPDATE_PERIOD );
     }
 
     
@@ -356,14 +339,6 @@ void default_mode( pinput_info input_info )
  */
 void draw_and_show_screen( pinput_info input_info )
 {
-    // create fostream of err_msg and program_info_msg
-    ofstream program_info_msg( "program_info_msg.txt", ios::app );
-
-
-    // make sure file "program_info_msg.txt" is created
-    if ( !program_info_msg )
-        input_info->terminate_program_TF = true;
-
 
     // copy data form input_info
     Screen screen = input_info->screen;
