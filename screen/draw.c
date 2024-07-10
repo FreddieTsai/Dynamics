@@ -134,11 +134,11 @@ Screen draw_pendulum(Screen screen, double theta, double length) {
  * @param alpha 單擺的角加速度
  * @param omega 單擺的角速度
  * @param length 單擺的長度
- * @param mass 單擺的質量
+ * @param time 時間差
  * @return 傳入的螢幕物件 or NULL(執行失敗)
  */
-Screen draw_data_panel(Screen screen, char* theta, char* alpha, char* omega, char* length, char* mass) {
-    char *input_data[5] = {theta, alpha, omega, length, mass};
+Screen draw_data_panel(Screen screen, char* theta, char* alpha, char* omega, char* length, char* time) {
+    char *input_data[5] = {theta, alpha, omega, length, time};
     int data_panel_content_length = strlen(data_panel_contents[0]);
     position current_pos = {
         screen -> layout.data_panel.x + 1, 

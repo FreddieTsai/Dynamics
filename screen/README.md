@@ -162,11 +162,11 @@
         3. `alpha`  : 單擺的角加速度
         4. `omega`  : 單擺的角速度
         5. `length` : 單擺的長度
-        6. `mass`   : 單擺的質量
+        6. `time`   : 時間差
     * 回傳值：傳入的螢幕物件 or NULL(執行失敗)
 
     ```c++
-    Screen draw_data_panel(Screen screen, char* theta, char* alpha, char* omega, char* length, char* mass)
+    Screen draw_data_panel(Screen screen, char* theta, char* alpha, char* omega, char* length, char* time)
     ```
 
     - - -
