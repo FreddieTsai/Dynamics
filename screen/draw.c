@@ -2,7 +2,7 @@
  * @file draw.cpp
  * @author IalvinchangI
  * @brief 畫各個面板 (`clean_screen`, `draw_pendulum`, `draw_data_panel`, `draw_info_panel`, `screen_input`) (`draw_screen_input`) (`flash_TF`)
- * @version 0.6
+ * @version 0.7
  * @date 2024-07-10
  */
 
@@ -24,28 +24,30 @@ static bool flash_TF(Screen screen);
 #define STR_ALPHA   "Angular_Acceleration"
 #define STR_OMEGA   "Angular_Velocity"
 #define STR_LENGTH  "Length"
-#define STR_MASS    "Mass"
+#define STR_TIME    "Time"
 
 static char *data_panel_contents[5] = {
     STR_THETA  "               "    STR_EQUAL, 
     STR_ALPHA  ""                   STR_EQUAL, 
     STR_OMEGA  "    "               STR_EQUAL, 
     STR_LENGTH "              "     STR_EQUAL, 
-    STR_MASS   "                "   STR_EQUAL
+    STR_TIME   "                "   STR_EQUAL
 };
 
 static char *info_content[2] = {
-    "1", 
-    "2"
+    "Default Mode"  STR_COLON                       STR_LARGE_SPACE
+    "C"             STR_COLON   "Continue"          STR_LARGE_SPACE
+    "E"             STR_COLON   "Exit"              STR_LARGE_SPACE
+    "P"             STR_COLON   "Pause"             STR_LARGE_SPACE
+    "I"             STR_COLON   "Insert"
+    , 
+    "Insert Mode"   STR_COLON                       STR_LARGE_SPACE
+    "A"             STR_COLON   STR_THETA           STR_SMALL_SPACE
+    "T"             STR_COLON   STR_TIME            STR_SMALL_SPACE
+    "L"             STR_COLON   STR_LENGTH          STR_LARGE_SPACE
+    "C"             STR_COLON   "Exit Insert Mode"  STR_LARGE_SPACE
+    "E"             STR_COLON   "Exit Program"
 };
-// static char *info_content = "insert"   STR_COLON "I"           STR_SMALL_SPACE
-//                             STR_THETA  STR_COLON "T"           STR_SMALL_SPACE
-//                             STR_ALPHA  STR_COLON "A"           STR_SMALL_SPACE
-//                             STR_OMEGA  STR_COLON "W"           STR_LARGE_SPACE
-//                             "pause"    STR_COLON "P"           STR_LARGE_SPACE
-//                             "continue" STR_COLON "C"           STR_LARGE_SPACE
-//                             "end"      STR_COLON "E | ctrl+c"
-// ;
 
 
 /**
@@ -59,16 +61,16 @@ unsigned short const DATA_PANEL_WIDTH = 34;
 unsigned short const DATA_PANEL_HEIGHT = 11;
 
 // the length of info content
-unsigned short const INFO_LENGTH = 108;
+unsigned short const INFO_LENGTH = 89;
 // the height of info panel
 unsigned short const INFO_PANEL_HEIGHT = 3;
 
 // the minimum width the screen can have
-//unsigned short const SCREEN_MINIMUM_WIDTH = INFO_LENGTH + 2;  // 110
-unsigned short const SCREEN_MINIMUM_WIDTH = 110;  // 110
+// unsigned short const SCREEN_MINIMUM_WIDTH = INFO_LENGTH + 2;  // 91
+unsigned short const SCREEN_MINIMUM_WIDTH = 91;
 // the minimum height the screen can have
-//unsigned short const SCREEN_MINIMUM_HEIGHT = DATA_PANEL_HEIGHT + 2 + INFO_PANEL_HEIGHT;  // 16
-unsigned short const SCREEN_MINIMUM_HEIGHT = 16;  // 16
+// unsigned short const SCREEN_MINIMUM_HEIGHT = DATA_PANEL_HEIGHT + 2 + INFO_PANEL_HEIGHT;  // 16
+unsigned short const SCREEN_MINIMUM_HEIGHT = 16;
 
 
 // the frequncy that screen_input flash
