@@ -16,6 +16,9 @@ using namespace std;
 ofstream program_info_msg;
 string log_file_name( "program_info_msg.txt" );
 
+// period of updating screen with ms
+extern const long SCREEN_UPDATE_PERIOD = 30L;
+
 
 int main()
 {
@@ -28,7 +31,7 @@ int main()
     if ( !program_info_msg )
         return 1;
 
-    program_info_msg << "program start\n";
+    program_info_msg << "\nprogram start\n";
 
 
     // initialize objects
@@ -94,7 +97,7 @@ int main()
         }
 
         // lower the frequency of updating screen
-        Sleep( 500L );
+        Sleep( SCREEN_UPDATE_PERIOD );
     }
 
     program_info_msg << "program end\n";

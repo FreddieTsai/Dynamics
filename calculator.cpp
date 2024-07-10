@@ -26,7 +26,7 @@ double calculateDegree (double length, double degree){
     //degree: 棍子跟x軸正向夾角
     
     //double t = 0.0001; 
-    double t = 0.1; 
+    double t = 0.01; 
     // t 為單位時間
     // 設定單位時間 t = 0.0001
 

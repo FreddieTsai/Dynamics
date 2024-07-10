@@ -14,9 +14,12 @@
 
 using namespace std;
 
-
+// log file ( defined in main.cpp )
 extern string log_file_name;
 extern ofstream program_info_msg;
+
+// period of updating screen with ms ( defined in main.cpp )
+extern const long SCREEN_UPDATE_PERIOD;
 
 
 /********************  change mode according to user input  ***********************/
@@ -269,7 +272,7 @@ void insert_mode( pinput_info input_info )
         default_mode( input_info );
 
         //lower the frequency of updating screen
-        Sleep( 10L );
+        Sleep( SCREEN_UPDATE_PERIOD );
     }
 
     
