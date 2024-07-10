@@ -1,8 +1,8 @@
 #ifndef INPUT_INFO_H
     #define INPUT_INFO_H
     #include "..\screen\screen.h"
-    #include "..\screen\screen_input_name.h"
     #include "physical_info.h"
+    //#include "output.h"
 
     /**
      * @param terminate_program_TF determine program is terminated or not
@@ -18,6 +18,7 @@
         screen_input_name &name;
         pphysical_info physical_info;
         Screen screen;
+        //plog_info log_info;
     } input_info, *pinput_info;
 
 #endif

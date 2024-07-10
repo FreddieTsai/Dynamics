@@ -5,21 +5,26 @@
 #include <fstream>  // for ofstream
 
 
-#include "screen\screen.h"
 #include "user\user.h"
-#include "user\physical_info.h"
+#include "user\input_info.h"
 
 
 using namespace std;
 
+
+// log file
+ofstream program_info_msg;
+string log_file_name( "program_info_msg.txt" );
+
+
 int main()
 {
 
-    // create fostream of err_msg and program_info_msg
-    ofstream program_info_msg( "program_info_msg.txt", ios::app );
+    // create fostream of program_info_msg with append mode
+    program_info_msg.open( log_file_name, ios::app );
 
 
-    // make sure file "program_info_msg.txt" is created
+    // make sure log file is created
     if ( !program_info_msg )
         return 1;
 
@@ -53,7 +58,8 @@ int main()
 
     // initialize input info
     input_info __input_info{
-        terminate_program_TF, terminate_insertion_TF, mode, name, physical_info, screen
+        terminate_program_TF, terminate_insertion_TF,
+        mode, name, physical_info, screen, 
     };
     pinput_info input_info = &__input_info;
 

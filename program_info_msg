@@ -1,0 +1,12 @@
+program start
+user input thread start
+program paused
+program continue
+insert mode start
+insertion thread start
+inserting length
+***ERROR: LENGTH inserted is invalid***
+inserting length
+insertion thread end
+user input thread end
+program end
