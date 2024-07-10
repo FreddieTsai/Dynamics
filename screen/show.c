@@ -10,8 +10,8 @@
 #include<stdio.h>  // printf
 #include<stdlib.h>  // system
 
-#include "screen_object.h"  // Screen, screen_input_name.NONE
-#include "draw.h"  // clean_screen, draw_info_panel
+#include "screen_object.h"  // Screen
+#include "draw.h"  // clean_screen
 
 
 /**
@@ -23,7 +23,6 @@
  */
 Screen screen_show(Screen screen) {
     // draw last part
-    draw_info_panel(screen, DEFAULT_MODE);
     draw_screen_input(screen);
 
     // clean cmd
@@ -36,9 +35,6 @@ Screen screen_show(Screen screen) {
 
     // clean screen
     clean_screen(screen);
-
-    // clean input
-    // screen_input(screen, NONE);
 
     return screen;
 }
