@@ -14,8 +14,12 @@
 
     void insert_mode( pinput_info );
 
+    void update_physical_variable( pinput_info, char *, size_t & );
+
     void draw_and_show_screen( pinput_info );
 
     char *double_to_char( char *, double, size_t sz );
+
+    double char_to_double( char *, size_t )
 
 #endif

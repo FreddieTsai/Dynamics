@@ -121,20 +121,20 @@ unsigned __stdcall insertion_thread( void *__input_info )
         key_input = toupper( key_input );
         double change_value = 0.0;
 
+        // get user input
+        char ch = '0';
+
+        // store new value about THETA
+        char buffer[DOUBLE_NUMBER_OF_DIGITS];
+
+        // record what digit will be inserted into buffer
+        size_t idx = 0;
+
         switch ( key_input )
         {
             case 'A' :
                 input_info->input_name = THETA;
                 program_info_msg << "inserting theta\n";
-
-                // get user input
-                char ch = '0';
-
-                // store new value about THETA
-                char buffer[DOUBLE_NUMBER_OF_DIGITS];
-
-                // record what digit will be inserted into buffer
-                size_t idx = 0;
 
                 while ( ch != '\r' )
                 {
@@ -151,15 +151,6 @@ unsigned __stdcall insertion_thread( void *__input_info )
                 input_info->input_name = TIME;
                 program_info_msg << "inserting time\n";
 
-                // get user input
-                char ch = '0';
-
-                // store new value about TIME
-                char buffer[DOUBLE_NUMBER_OF_DIGITS];
-
-                // record what digit will be inserted into buffer
-                size_t idx = 0;
-
                 while ( ch != '\r' )
                 {
                     ch = getch();
@@ -174,15 +165,6 @@ unsigned __stdcall insertion_thread( void *__input_info )
             case 'L' :
                 input_info->input_name = LENGTH;
                 program_info_msg << "inserting length\n";
-
-                // get user input
-                char ch = '0';
-
-                // store new value about TIME
-                char buffer[DOUBLE_NUMBER_OF_DIGITS];
-
-                // record what digit will be inserted into buffer
-                size_t idx = 0;
 
                 while ( ch != '\r' )
                 {
