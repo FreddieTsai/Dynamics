@@ -2,8 +2,8 @@
  * @file screen_input_name.h
  * @author IalvinchangI
  * @brief 定義 `screen_input` 的參數
- * @version 0.4
- * @date 2024-07-06
+ * @version 0.5
+ * @date 2024-07-10
  */
 
 
@@ -16,7 +16,7 @@
      * `ALPHA`  : 單擺的角加速度
      * `OMEGA`  : 單擺的角速度
      * `LENGTH` : 單擺的長度
-     * `MASS`   : 單擺的質量
+     * `TIME`   : 時間差
      * `NONE`   : 沒在輸入
      */
     typedef enum __screen_input_name {
@@ -25,6 +25,6 @@
         ALPHA,      // 單擺的角加速度
         OMEGA,      // 單擺的角速度
         LENGTH,     // 單擺的長度
-        MASS        // 單擺的質量
+        TIME        // 時間差
     } screen_input_name;
 #endif
