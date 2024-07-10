@@ -403,7 +403,7 @@ void draw_and_show_screen( pinput_info input_info )
          char_alpha[DOUBLE_NUMBER_OF_DIGITS], 
          char_omega[DOUBLE_NUMBER_OF_DIGITS], 
          char_length[DOUBLE_NUMBER_OF_DIGITS], 
-         char_mass[DOUBLE_NUMBER_OF_DIGITS];
+         char_time[DOUBLE_NUMBER_OF_DIGITS];
 
 
     screen = draw_data_panel(
@@ -412,7 +412,7 @@ void draw_and_show_screen( pinput_info input_info )
         double_to_char( char_alpha, physical_info->alpha, DOUBLE_NUMBER_OF_DIGITS ),
         double_to_char( char_omega, physical_info->omega, DOUBLE_NUMBER_OF_DIGITS ),
         double_to_char( char_length, physical_info->length, DOUBLE_NUMBER_OF_DIGITS ),
-        double_to_char( char_mass, physical_info->time, DOUBLE_NUMBER_OF_DIGITS )
+        double_to_char( char_time, physical_info->time, DOUBLE_NUMBER_OF_DIGITS )
     );
     assert( screen != NULL );
     if (screen == NULL) {
