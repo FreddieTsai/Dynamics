@@ -51,7 +51,11 @@ int main()
 
 
     // user insertion should be initialized as NONE
-    screen_input_name name = NONE;
+    screen_input_name input_name = NONE;
+
+
+    // info panel should be initialized as DEFAULT_MODE
+    screen_info_name info_name = DEFAULT_MODE;
 
 
     // initialize values of physical variables
@@ -62,7 +66,7 @@ int main()
     // initialize input info
     input_info __input_info{
         terminate_program_TF, terminate_insertion_TF,
-        mode, name, physical_info, screen, 
+        mode, input_name, info_name, physical_info, screen, 
     };
     pinput_info input_info = &__input_info;
 
