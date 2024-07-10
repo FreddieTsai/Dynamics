@@ -2,8 +2,8 @@
  * @file graph.h
  * @author IalvinchangI
  * @brief 在螢幕上畫出字、圖，以及一些常用的符號 () (`print_string`, `print_line`, `print_char`)
- * @version 0.4
- * @date 2024-07-07
+ * @version 0.5
+ * @date 2024-07-10
  */
 
 
@@ -22,8 +22,8 @@
     #define CHAR_INPUT      '<'
 
     #define STR_COLON       ": "
-    #define STR_SMALL_SPACE "  "
-    #define STR_LARGE_SPACE "   "
+    #define STR_SMALL_SPACE "   "
+    #define STR_LARGE_SPACE "    "
     #define STR_EQUAL       " = "
 
 
