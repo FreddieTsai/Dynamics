@@ -1,9 +1,9 @@
 /**
  * @file screen_object.h
  * @author IalvinchangI
- * @brief 定義 `Screen`, `Layout`，引入 `screen_input_name`
- * @version 0.7
- * @date 2024-07-09
+ * @brief 定義 `Screen`, `Layout`，引入 `screen_input_name`, `screen_info_name`
+ * @version 0.8
+ * @date 2024-07-10
  */
 
 
@@ -14,6 +14,7 @@
 
     #include "vector.h"  // position, rectangle
     #include "screen_input_name.h"  // screen_input_name
+    #include "screen_info_name.h"  // screen_info_name
 
 
     /**

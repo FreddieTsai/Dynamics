@@ -27,6 +27,15 @@
 
     - - -
 
+* ### screen_info_name (`enum`)
+
+    適用於`draw_info_panel`的參數
+    1. `DEFAULT_MODE` : default mode
+    2. `INSERT_MODE`  : insert mode
+    3. `NO_INFO`      : 沒有 info
+
+    - - -
+
 * ### PI (`constant`)
 
     - - -
@@ -158,6 +167,20 @@
 
     ```c++
     Screen draw_data_panel(Screen screen, char* theta, char* alpha, char* omega, char* length, char* mass)
+    ```
+
+    - - -
+
+* ### draw_info_panel
+
+    * 功能：把 顯示快捷鍵的面板 畫出來
+    * 參數：
+        1. `screen` : 螢幕物件
+        2. `name`   : 顯示哪個面板
+    * 回傳值：傳入的螢幕物件 or NULL(執行失敗)
+
+    ```c++
+    Screen draw_info_panel(Screen screen, screen_info_name name)
     ```
 
     - - -

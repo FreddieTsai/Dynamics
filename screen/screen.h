@@ -2,8 +2,8 @@
  * @file screen.h
  * @author IalvinchangI
  * @brief 處理螢幕顯示
- * @version 0.7
- * @date 2024-07-07
+ * @version 0.8
+ * @date 2024-07-10
  */
 
 
@@ -24,6 +24,7 @@
 
 
     #include "screen_input_name.h"
+    #include "screen_info_name.h"
     #include "PI.h"
 
     extern unsigned short const INPUT_FIELD_LENGTH;
@@ -55,6 +56,8 @@
         Screen draw_pendulum(Screen screen, double theta, double length);
 
         Screen draw_data_panel(Screen screen, char* theta, char* alpha, char* omega, char* length, char* mass);
+
+        Screen draw_info_panel(Screen screen, screen_info_name name);
 
         Screen screen_input(Screen screen, screen_input_name name);
 

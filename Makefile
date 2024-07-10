@@ -5,7 +5,7 @@ MAIN_PROGRAM_NAME := main
 
 
 # the header files that main program includes
-MAIN_PROGRAM_HEADER := screen.h screen_input_name.h PI.h user.h input_info.h physical_info.h
+MAIN_PROGRAM_HEADER := screen.h screen_input_name.h screen_info_name.h PI.h user.h input_info.h physical_info.h
 
 
 # sub directory
@@ -51,7 +51,7 @@ $(MAIN_PROGRAM_NAME).o: $(MAIN_PROGRAM_NAME).cpp $(MAIN_PROGRAM_HEADER)
 
 ###################################### compile user ######################################
 
-user.o: user.cpp screen.h screen_input_name.h PI.h user.h input_info.h physical_info.h calculator.h
+user.o: user.cpp screen.h screen_input_name.h screen_info_name.h PI.h user.h input_info.h physical_info.h calculator.h
 	$(CPPC) -c $<
 
 ############################################################################################
@@ -73,19 +73,19 @@ calculator.o: calculator.cpp
 
 ###################################### compile screen ######################################
 
-graph.o: graph.c screen_object.h vector.h screen_input_name.h PI.h graph.h
+graph.o: graph.c screen_object.h vector.h screen_input_name.h screen_info_name.h PI.h graph.h
 	$(CC) -c $<
 
-setting.o: setting.cpp screen_object.h vector.h screen_input_name.h draw.h panel_constant.h
+setting.o: setting.cpp screen_object.h vector.h screen_input_name.h screen_info_name.h draw.h panel_constant.h
 	$(CPPC) -c $<
 
-show.o: show.c screen_object.h vector.h screen_input_name.h draw.h
+show.o: show.c screen_object.h vector.h screen_input_name.h screen_info_name.h draw.h
 	$(CC) -c $<
 
 vector.o: vector.c vector.h
 	$(CC) -c $<
 
-draw.o: draw.c screen_object.h vector.h screen_input_name.h graph.h
+draw.o: draw.c screen_object.h vector.h screen_input_name.h screen_info_name.h graph.h
 	$(CC) -c $<
 
 ############################################################################################

@@ -1,9 +1,9 @@
 /**
  * @file draw.cpp
  * @author IalvinchangI
- * @brief 畫各個面板 (`clean_screen`, `draw_pendulum`, `draw_data_panel`, `screen_input`) (`draw_info_panel`, `draw_screen_input`) (`flash_TF`)
- * @version 0.5
- * @date 2024-07-09
+ * @brief 畫各個面板 (`clean_screen`, `draw_pendulum`, `draw_data_panel`, `draw_info_panel`, `screen_input`) (`draw_screen_input`) (`flash_TF`)
+ * @version 0.6
+ * @date 2024-07-10
  */
 
 
@@ -12,7 +12,7 @@
 #include<math.h>  // cos, sin, abs
 #include<stdbool.h>  // bool, true, false
 
-#include "screen_object.h"  // Screen, Layout, screen_input_name
+#include "screen_object.h"  // Screen, Layout, screen_input_name, screen_info_name
 #include "vector.h"  // position, rectangle
 #include "graph.h"  // all
 static bool flash_TF(Screen screen);
@@ -34,14 +34,18 @@ static char *data_panel_contents[5] = {
     STR_MASS   "                "   STR_EQUAL
 };
 
-static char *info_content = "insert"   STR_COLON "I"           STR_SMALL_SPACE
-                            STR_THETA  STR_COLON "T"           STR_SMALL_SPACE
-                            STR_ALPHA  STR_COLON "A"           STR_SMALL_SPACE
-                            STR_OMEGA  STR_COLON "W"           STR_LARGE_SPACE
-                            "pause"    STR_COLON "P"           STR_LARGE_SPACE
-                            "continue" STR_COLON "C"           STR_LARGE_SPACE
-                            "end"      STR_COLON "E | ctrl+c"
-;
+static char *info_content[2] = {
+    "1", 
+    "2"
+};
+// static char *info_content = "insert"   STR_COLON "I"           STR_SMALL_SPACE
+//                             STR_THETA  STR_COLON "T"           STR_SMALL_SPACE
+//                             STR_ALPHA  STR_COLON "A"           STR_SMALL_SPACE
+//                             STR_OMEGA  STR_COLON "W"           STR_LARGE_SPACE
+//                             "pause"    STR_COLON "P"           STR_LARGE_SPACE
+//                             "continue" STR_COLON "C"           STR_LARGE_SPACE
+//                             "end"      STR_COLON "E | ctrl+c"
+// ;
 
 
 /**
@@ -191,11 +195,14 @@ Screen draw_screen_input(Screen screen) {
  * @brief 把 顯示快捷鍵的面板 畫出來
  * 
  * @param screen 螢幕物件
+ * @param name 顯示哪個面板
  * @return 傳入的螢幕物件 or NULL(執行失敗)
  */
-Screen draw_info_panel(Screen screen) {
+Screen draw_info_panel(Screen screen, screen_info_name name) {
     // print info
-    print_string(screen, screen -> layout.info_panel_content, info_content, strlen(info_content));
+    if (name != NO_INFO) {
+        print_string(screen, screen -> layout.info_panel_content, info_content[name], strlen(info_content[name]));
+    }
 
     // print ===
     for (int i = 0; i < screen -> width; i++) {
