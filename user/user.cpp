@@ -285,7 +285,7 @@ void insert_mode( pinput_info input_info )
     // while waiting user input, show screen in default way
     while ( !input_info->terminate_insertion_TF )
     {
-        default_mode( input_info );
+        pause_mode( input_info );
 
         //lower the frequency of updating screen
         Sleep( SCREEN_UPDATE_PERIOD );
