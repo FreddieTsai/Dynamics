@@ -59,14 +59,14 @@ int main()
 
 
     // initialize values of physical variables
-    physical_info __physical_info{ 20.0, 1.0, 1.0, 20.0, 1.0 };
+    physical_info __physical_info{ 20.0, 1.0, 1.0, 20.0, 0.01 };
     pphysical_info physical_info = &__physical_info;
     
 
     // initialize input info
     input_info __input_info{
         terminate_program_TF, terminate_insertion_TF,
-        mode, input_name, info_name, physical_info, screen, 
+        mode, input_name, info_name, physical_info, screen,
     };
     pinput_info input_info = &__input_info;
 

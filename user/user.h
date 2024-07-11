@@ -14,7 +14,7 @@
 
     void insert_mode( pinput_info );
 
-    void update_physical_variable( pinput_info, char *, size_t & );
+    void update_physical_variable( pinput_info input_info, char ch, char *buffer, size_t &idx );
 
     void draw_and_show_screen( pinput_info );
 

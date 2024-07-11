@@ -1,6 +1,8 @@
 #ifndef PHYSICAL_INFO_H
     #define PHYSICAL_INFO_H
 
+    #include "..\screen\PI.h"
+
     /**
      * @param theta
      * @param alpha

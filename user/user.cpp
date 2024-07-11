@@ -73,8 +73,8 @@ unsigned __stdcall user_input_thread( void *__input_info )
                 insert_mode( input_info );
                 break;
 
-            case 'W' : case 'A' : case 'T' :
-                program_info_msg << "***ERROR: enter \'W\' or \'A\' or \'T\'"
+            case 'A' : case 'L' : case 'T' :
+                program_info_msg << "***ERROR: enter \'A\' or \'L\' or \'T\'"
                                  << " but not in insert mode***\n";
                 break;
 
@@ -139,7 +139,7 @@ unsigned __stdcall insertion_thread( void *__input_info )
                 while ( ch != '\r' )
                 {
                     ch = getch();
-                    update_physical_variable( input_info, buffer, idx );
+                    update_physical_variable( input_info, ch, buffer, idx );
                     physical_info->theta = char_to_double( buffer, idx );
                 }
 
@@ -154,7 +154,7 @@ unsigned __stdcall insertion_thread( void *__input_info )
                 while ( ch != '\r' )
                 {
                     ch = getch();
-                    update_physical_variable( input_info, buffer, idx );
+                    update_physical_variable( input_info, ch, buffer, idx );
                     physical_info->time = char_to_double( buffer, idx );
                 }
 
@@ -169,7 +169,7 @@ unsigned __stdcall insertion_thread( void *__input_info )
                 while ( ch != '\r' )
                 {
                     ch = getch();
-                    update_physical_variable( input_info, buffer, idx );
+                    update_physical_variable( input_info, ch, buffer, idx );
                     physical_info->length = char_to_double( buffer, idx );
                 }
 
@@ -212,15 +212,15 @@ unsigned __stdcall insertion_thread( void *__input_info )
 
 /**
  * @brief update values of physical variables
+ * 
  * @param pinput_info input_info
+ * @param char ch : user input
+ * @param char *buffer : store update value of certain physical variable
+ * @param size_t &idx : record which digit will be inserted
  */
-void update_physical_variable( pinput_info input_info, char *buffer, size_t &idx )
+void update_physical_variable( pinput_info input_info, char ch, char *buffer, size_t &idx )
 {
     pphysical_info physical_info = input_info->physical_info;
-
-    // get user input
-    char ch = getch();
-    ch = toupper(ch);
 
     // terminate program
     if ( ch == 'E' ) {
@@ -330,21 +330,22 @@ void default_mode( pinput_info input_info )
     pphysical_info physical_info = input_info->physical_info;
 
 
-    //calculate new  values of physical variables
+    // calculate new  values of physical variables
+    // and need to convert theta from degree to radiant
     physical_info->theta += calculateDegree(
         physical_info->length,
-        physical_info->theta,
+        (physical_info->theta)*(PI/180),
         physical_info->time
     );
 
     physical_info->omega = angSpeed(
         physical_info->length,
-        physical_info->theta
+        (physical_info->theta)*(PI/180)
     );
 
     physical_info->alpha = angAcceler(
         physical_info->length,
-        physical_info->theta
+        (physical_info->theta)*(PI/180)
     );
 
     draw_and_show_screen( input_info );
