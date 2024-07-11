@@ -20,6 +20,6 @@
 
     char *double_to_char( char *, double, size_t sz );
 
-    double char_to_double( char *, size_t )
+    double char_to_double( char *, size_t );
 
 #endif
