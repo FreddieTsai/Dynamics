@@ -2,8 +2,8 @@
  * @file setting.cpp
  * @author IalvinchangI
  * @brief `Screen`的設定、刪除 (`set_screen_size`, `create_screen`, `set_pendulum_radius`, `delete_screen`) () (`set_layout`, `delete_ground`, `init_screen`)
- * @version 0.7
- * @date 2024-07-07
+ * @version 0.8
+ * @date 2024-07-10
  */
 
 
@@ -103,7 +103,7 @@ static Screen set_layout(Screen screen) {
     screen -> layout.data_panel.y = (int)((pendulum_panel_height - DATA_PANEL_HEIGHT) / 2);
 
     // set the position of info_panel_content
-    screen -> layout.info_panel_content.x = (int)((screen -> width - INFO_LENGTH) / 2);
+    screen -> layout.info_panel_content.x = 0;  // (int)((screen -> width - INFO_LENGTH) / 2);
     screen -> layout.info_panel_content.y = pendulum_panel_height + 1;
 
     return screen;
