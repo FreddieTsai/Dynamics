@@ -2,8 +2,8 @@
  * @file draw.cpp
  * @author IalvinchangI
  * @brief 畫各個面板 (`clean_screen`, `draw_pendulum`, `draw_data_panel`, `draw_info_panel`, `screen_input`) (`draw_screen_input`) (`flash_TF`)
- * @version 0.7
- * @date 2024-07-10
+ * @version 0.8
+ * @date 2024-07-11
  */
 
 
@@ -236,7 +236,7 @@ Screen screen_input(Screen screen, screen_input_name name) {
 // return wheather to display the screen_input(flash) and update the value of flash
 static bool flash_TF(Screen screen) {
     // check
-    bool output = screen -> flash & INPUT_FLASH_FREQUENCY;
+    bool output = !(screen -> flash & INPUT_FLASH_FREQUENCY);
     // update
     screen -> flash++;
     // output
