@@ -55,7 +55,7 @@
 
         Screen draw_pendulum(Screen screen, double theta, double length);
 
-        Screen draw_data_panel(Screen screen, char* theta, char* alpha, char* omega, char* length, char* mass);
+        Screen draw_data_panel(Screen screen, char* theta, char* alpha, char* omega, char* length, char* time);
 
         Screen draw_info_panel(Screen screen, screen_info_name name);
 
