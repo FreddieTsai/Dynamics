@@ -334,19 +334,17 @@ void default_mode( pinput_info input_info )
     physical_info->theta += calculateDegree(
         physical_info->length,
         physical_info->theta,
-        physical_info->time;
     );
 
     physical_info->omega = angSpeed(
         physical_info->length,
         physical_info->theta,
-        physical_info->time;
     );
 
     physical_info->alpha = angAcceler(
         physical_info->length,
         physical_info->theta,
-        physical_info->time;
+        physical_info->time
     );
 
     draw_and_show_screen( input_info );
