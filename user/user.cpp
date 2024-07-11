@@ -1,4 +1,4 @@
-#include <conio.h>  // for _getch()
+#include <conio.h>  // for getch()
 #include <ctype.h> // for toupper()
 #include <windows.h>  // for Sleep()
 #include <cassert>  // for assert()
@@ -20,6 +20,10 @@ extern ofstream program_info_msg;
 
 // period of updating screen with ms ( defined in main.cpp )
 extern const long SCREEN_UPDATE_PERIOD;
+
+
+// number of digits of a double value
+extern const size_t DOUBLE_NUMBER_OF_DIGITS = 9;
 
 
 /********************  change mode according to user input  ***********************/
@@ -44,7 +48,7 @@ unsigned __stdcall user_input_thread( void *__input_info )
 
     while ( !input_info->terminate_program_TF )
     {
-        key_input = _getch();
+        key_input = getch();
         key_input = toupper( key_input );
 
         switch ( key_input )
@@ -69,8 +73,8 @@ unsigned __stdcall user_input_thread( void *__input_info )
                 insert_mode( input_info );
                 break;
 
-            case 'W' : case 'A' : case 'T' :
-                program_info_msg << "***ERROR: enter \'W\' or \'A\' or \'T\'"
+            case 'A' : case 'L' : case 'T' :
+                program_info_msg << "***ERROR: enter \'A\' or \'L\' or \'T\'"
                                  << " but not in insert mode***\n";
                 break;
 
@@ -113,111 +117,70 @@ unsigned __stdcall insertion_thread( void *__input_info )
 
     while ( (!input_info->terminate_program_TF) && (!input_info->terminate_insertion_TF) )
     {
-        key_input = _getch();
+        key_input = getch();
         key_input = toupper( key_input );
         double change_value = 0.0;
 
+        // get user input
+        char ch = '0';
+
+        // store new value about THETA
+        char buffer[DOUBLE_NUMBER_OF_DIGITS];
+
+        // record what digit will be inserted into buffer
+        size_t idx = 0;
+
         switch ( key_input )
         {
-            case 'W' :
-                input_info->name = OMEGA;
-                program_info_msg << "inserting omega\n";
-                cin >> change_value;
-                input_info->name = NONE;
+            case 'A' :
+                input_info->input_name = THETA;
+                program_info_msg << "inserting theta\n";
 
-                // user input is valid for OMEGA
-                if ( cin ) {
-                    physical_info->omega = change_value;
+                while ( ch != '\r' )
+                {
+                    ch = getch();
+                    update_physical_variable( input_info, ch, buffer, idx );
+                    physical_info->theta = char_to_double( buffer, idx );
                 }
-                else {
-                    program_info_msg << "***ERROR: OMEGA inserted is invalid***\n";
-                    cin.clear();
-                    cin.ignore( 1024, '\n' );
-                }
+
+                input_info->input_name = NONE;
+
                 break;
             
-            case 'A' :
-                input_info->name = ALPHA;
-                program_info_msg << "inserting alpha\n";
-                cin >> change_value;
-                input_info->name = NONE;
+            case 'T' :
+                input_info->input_name = TIME;
+                program_info_msg << "inserting time\n";
 
-                // user input is valid for ALPHA
-                if ( cin ) {
-                    physical_info->alpha = change_value;
+                while ( ch != '\r' )
+                {
+                    ch = getch();
+                    update_physical_variable( input_info, ch, buffer, idx );
+                    physical_info->time = char_to_double( buffer, idx );
                 }
-                else {
-                    program_info_msg << "***ERROR: ALPHA inserted is invalid***\n";
-                    cin.clear();
-                    cin.ignore( 1024, '\n' );
-                }
+
+                input_info->input_name = NONE;
+
                 break;
 
             case 'L' :
-                input_info->name = LENGTH;
+                input_info->input_name = LENGTH;
                 program_info_msg << "inserting length\n";
-                cin >> change_value;
-                input_info->name = NONE;
 
-                // user input is valid for LENGTH (the type is double),
-                // but not assure the input is not 0
-                if ( cin ) {
-
-                    // length can't be 0
-                    if ( change_value != 0 ) {
-                        physical_info->length = change_value;
-                    }
-
-                    // when length is 0
-                    else {
-                        program_info_msg << "***ERROR: length inserted is 0***\n";
-                    }
+                while ( ch != '\r' )
+                {
+                    ch = getch();
+                    update_physical_variable( input_info, ch, buffer, idx );
+                    physical_info->length = char_to_double( buffer, idx );
                 }
-                else {
-                    program_info_msg << "***ERROR: LENGTH inserted is invalid***\n";
-                    cin.clear();
-                    cin.ignore( 1024, '\n' );
-                }
+
+                input_info->input_name = NONE;
+
                 break;
-            
-            case 'M' :
-                input_info->name = MASS;
-                program_info_msg << "inserting mass\n";
-                cin >> change_value;
-                input_info->name = NONE;
-
-                // user input is valid for MASS
-                if ( cin ) {
-                    physical_info->mass = change_value;
-                }
-                else {
-                    program_info_msg << "***ERROR: MASS inserted is invalid***\n";
-                    cin.clear();
-                    cin.ignore( 1024, '\n' );
-                }
-                break;
-
-            case 'T' :
-                input_info->name = THETA;
-                program_info_msg << "inserting theta\n";
-                cin >> change_value;
-                input_info->name = NONE;
-
-                // user input is valid for THETA
-                if ( cin ) {
-                    physical_info->theta = change_value;
-                }
-                else {
-                    program_info_msg << "***ERROR: THETA inserted is invalid***\n";
-                    cin.clear();
-                    cin.ignore( 1024, '\n' );
-                }
-
 
             // jump out of insert_mode
             case 'C' :
                 input_info->terminate_insertion_TF = true;
-                input_info->name = NONE;
+                input_info->input_name = NONE;
                 break;
             
 
@@ -225,7 +188,7 @@ unsigned __stdcall insertion_thread( void *__input_info )
             case 'E' :
                 input_info->terminate_insertion_TF = true;
                 input_info->terminate_program_TF = true;
-                input_info->name = NONE;
+                input_info->input_name = NONE;
                 break;
 
             default:
@@ -244,7 +207,56 @@ unsigned __stdcall insertion_thread( void *__input_info )
 }
 
 
-/***************************  insert mode  *********************************************/
+/***************************  updating physical variable *******************************/
+
+
+/**
+ * @brief update values of physical variables
+ * 
+ * @param pinput_info input_info
+ * @param char ch : user input
+ * @param char *buffer : store update value of certain physical variable
+ * @param size_t &idx : record which digit will be inserted
+ */
+void update_physical_variable( pinput_info input_info, char ch, char *buffer, size_t &idx )
+{
+    pphysical_info physical_info = input_info->physical_info;
+
+    // terminate program
+    if ( ch == 'E' ) {
+        input_info->terminate_insertion_TF = true;
+        input_info->terminate_program_TF = true;
+    }
+
+    // jump out insert_mode
+    else if ( ch == 'C' ) {
+        input_info->terminate_insertion_TF = true;
+    }
+
+    // invalid insertion to physical variables
+    else if ( !((ch >= '0' && ch <= '9') || (ch == '.')) ) {
+        program_info_msg << "***ERROR: insert an alphabet or other invalid key to physical variables***\n";
+        return;
+    }
+
+    // update new value about physical variables
+    else {
+        if ( idx >= DOUBLE_NUMBER_OF_DIGITS ) {
+            program_info_msg << "***ERROR: exceed maximum digit of a double value***\n";
+            return;
+        }
+
+        if ( ch != '\r' ) {
+            buffer[idx] = ch;
+            idx += 1;
+        }
+    }
+
+    return;
+}
+
+
+/**********************************  insert mode  **************************************/
 
 
 /**
@@ -257,6 +269,10 @@ void insert_mode( pinput_info input_info )
     // copy data from input_info
     Screen screen = input_info->screen;
     Screen tmp_screen = screen;
+
+
+    // change info panel to INSERT_MODE
+    input_info->info_name = INSERT_MODE;
 
 
     // create a thread waiting user inputs in insert_mode
@@ -276,6 +292,10 @@ void insert_mode( pinput_info input_info )
     }
 
     
+    // change info panel back to DEFAULT_MODE
+    input_info->info_name = DEFAULT_MODE;
+
+
     // set up terminate_insertion_TF to 'false' after insertion is done
     input_info->terminate_insertion_TF = false;
 }
@@ -310,20 +330,22 @@ void default_mode( pinput_info input_info )
     pphysical_info physical_info = input_info->physical_info;
 
 
-    //calculate new  values of physical variables
+    // calculate new  values of physical variables
+    // and need to convert theta from degree to radiant
     physical_info->theta += calculateDegree(
         physical_info->length,
-        physical_info->theta
+        (physical_info->theta)*(PI/180),
+        physical_info->time
     );
 
     physical_info->omega = angSpeed(
         physical_info->length,
-        physical_info->theta
+        (physical_info->theta)*(PI/180)
     );
 
     physical_info->alpha = angAcceler(
         physical_info->length,
-        physical_info->theta
+        (physical_info->theta)*(PI/180)
     );
 
     draw_and_show_screen( input_info );
@@ -350,17 +372,31 @@ void draw_and_show_screen( pinput_info input_info )
     pphysical_info physical_info = input_info->physical_info;
 
 
+    // show hot key info panel
+    screen = draw_info_panel( screen, input_info->info_name );
+    assert( screen != NULL );
+    if ( screen == NULL ) {
+        program_info_msg << "***ERROR: fail to draw info panel***\n";
+        screen = tmp_screen;
+    }
+
+
     // copy the values of physical variables into a char array
     // and use them to draw data panel
-    char char_theta[32], char_alpha[32], char_omega[32], char_length[32], char_mass[32];
+    char char_theta[DOUBLE_NUMBER_OF_DIGITS], 
+         char_alpha[DOUBLE_NUMBER_OF_DIGITS], 
+         char_omega[DOUBLE_NUMBER_OF_DIGITS], 
+         char_length[DOUBLE_NUMBER_OF_DIGITS], 
+         char_time[DOUBLE_NUMBER_OF_DIGITS];
+
 
     screen = draw_data_panel(
         screen,
-        double_to_char( char_theta, physical_info->theta, DOUBLE_NUMBER_DIGITS ),
-        double_to_char( char_alpha, physical_info->alpha, DOUBLE_NUMBER_DIGITS ),
-        double_to_char( char_omega, physical_info->omega, DOUBLE_NUMBER_DIGITS ),
-        double_to_char( char_length, physical_info->length, DOUBLE_NUMBER_DIGITS ),
-        double_to_char( char_mass, physical_info->mass, DOUBLE_NUMBER_DIGITS )
+        double_to_char( char_theta, physical_info->theta, DOUBLE_NUMBER_OF_DIGITS ),
+        double_to_char( char_alpha, physical_info->alpha, DOUBLE_NUMBER_OF_DIGITS ),
+        double_to_char( char_omega, physical_info->omega, DOUBLE_NUMBER_OF_DIGITS ),
+        double_to_char( char_length, physical_info->length, DOUBLE_NUMBER_OF_DIGITS ),
+        double_to_char( char_time, physical_info->time, DOUBLE_NUMBER_OF_DIGITS )
     );
     assert( screen != NULL );
     if (screen == NULL) {
@@ -370,7 +406,7 @@ void draw_and_show_screen( pinput_info input_info )
 
 
     // show which physical variable is waiting for user input or none of them
-    screen = screen_input( screen, input_info->name );
+    screen = screen_input( screen, input_info->input_name );
     assert( screen != NULL );
     if ( screen == NULL ) {
         program_info_msg << "***ERROR: fail to screen input***\n";
@@ -398,7 +434,7 @@ void draw_and_show_screen( pinput_info input_info )
 }
 
 
-/****************************  convert double to char*  *******************************/
+/****************************  convertion between double and char*  *******************************/
 
 
 /**
@@ -420,4 +456,45 @@ char *double_to_char( char *buffer, double double_value, size_t sz )
     }
 
     return buffer;
+}
+
+
+/**
+ * @brief get the double value from a char array
+ * 
+ * @param char *buffer
+ * @param size_t sz : size of char array
+ */
+double char_to_double( char *buffer, size_t sz )
+{
+    // make sure buffer has content
+    if ( sz <= 0 ) {
+        return 0.0;
+    }
+
+    double double_value = 0.0;
+    size_t i = 0;
+    
+    // get the integer part of double value
+    for ( i = 0; i < sz && buffer[i] != '.'; i++ ) {
+
+        double_value *= 10;
+        double_value += (buffer[i]-'0');
+    }
+
+    // reach end of buffer (get all numbers in buffer)
+    if ( i == sz ) {
+        return double_value;
+    }
+
+    // to get the digit after the decimal point
+    i += 1;
+
+    // get the float part of double value
+    for ( double offset = 0.1 ; i < sz; i++ ) {
+
+        double_value += (offset * (buffer[i]-'0'));
+        offset *= 0.1;
+    }
+    return double_value;
 }
