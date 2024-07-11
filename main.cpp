@@ -59,7 +59,7 @@ int main()
 
 
     // initialize values of physical variables
-    physical_info __physical_info{ 20.0, 1.0, 1.0, 20.0, 0.01 };
+    physical_info __physical_info{ 0.0, 1.0, 1.0, 20.0, 0.01 };
     pphysical_info physical_info = &__physical_info;
     
 
@@ -81,6 +81,12 @@ int main()
     // switch mode based on the value of mode
     while ( !terminate_program_TF )
     {
+
+        // set theta = 0 when theta exceed 180 degree
+        if ( physical_info->theta >= 179 ) {
+            physical_info->theta = 0;
+        }
+
         switch ( mode )
         {
             case 'P' :

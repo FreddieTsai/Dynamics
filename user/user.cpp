@@ -285,7 +285,7 @@ void insert_mode( pinput_info input_info )
     // while waiting user input, show screen in default way
     while ( !input_info->terminate_insertion_TF )
     {
-        default_mode( input_info );
+        pause_mode( input_info );
 
         //lower the frequency of updating screen
         Sleep( SCREEN_UPDATE_PERIOD );
@@ -332,20 +332,25 @@ void default_mode( pinput_info input_info )
 
     // calculate new  values of physical variables
     // and need to convert theta from degree to radiant
-    physical_info->theta += calculateDegree(
+    double tmp_theta = (physical_info->theta)*(PI/180);
+
+    tmp_theta += calculateDegree(
         physical_info->length,
-        (physical_info->theta)*(PI/180),
+        tmp_theta,
         physical_info->time
     );
 
+    // convert theta from radiant to degree
+    physical_info->theta = tmp_theta*(180/PI);
+
     physical_info->omega = angSpeed(
         physical_info->length,
-        (physical_info->theta)*(PI/180)
+        tmp_theta
     );
 
     physical_info->alpha = angAcceler(
         physical_info->length,
-        (physical_info->theta)*(PI/180)
+        tmp_theta
     );
 
     draw_and_show_screen( input_info );
@@ -415,7 +420,7 @@ void draw_and_show_screen( pinput_info input_info )
 
 
     // draw pendulum
-    screen  = draw_pendulum( screen, physical_info->theta, physical_info->length );
+    screen  = draw_pendulum( screen, (physical_info->theta)*(PI/180), physical_info->length );
     assert( screen != NULL );
     if ( screen == NULL ) {
         program_info_msg << "***ERROR: fail to draw pendulum***\n";
