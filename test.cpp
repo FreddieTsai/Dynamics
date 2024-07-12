@@ -2,66 +2,43 @@
 #include <conio.h>
 #include <ctype.h>
 #include <iostream>
+#include <string.h>
 
 using namespace std;
 
 
-double char_to_double( char *buffer, size_t sz );
+char *double_to_char( char *buffer, double double_value, size_t sz );
 
 int main()
 {
-    char ch = 'D', buffer[32];
-    size_t sz = 0;
-    while ( ch != '\r' )
-    {
-        ch = getch();
-        ch = toupper(ch);
-        cout << ch << endl;
-        buffer[sz] = ch;
-        sz += 1;
-        // cout << char_to_double( buffer, idx ) << endl;
-    }
-    cout << char_to_double( buffer, sz-1 );
-    double d = 12345.67891;
-    cout << d << endl;
+    char charr[9];
+    double d = 1.00000;
+
+    cout << strlen( double_to_char( charr, d, 9 ) ) << endl;
 }
 
-/**
- * @brief get the double value from a char array
- * 
- * @param char *buffer
- * @param size_t sz : size of char array
- */
-double char_to_double( char *buffer, size_t sz )
+char *double_to_char( char *buffer, double double_value, size_t sz )
 {
-    // make sure buffer has content
-    if ( sz <= 0 ) {
-        return 0.0;
-    }
-
-    double double_value = 0.0;
-    size_t i = 0;
+    snprintf( buffer, sz-1, "%f", double_value );
     
-    // get the integer part of double value
-    for ( i = 0; i < sz && buffer[i] != '.'; i++ ) {
+    // clear redundant 0s
+    for ( size_t i = sz-1; i >= 0; i-- ) {
+        if ( buffer[i] != '\0' ) {
+            if ( buffer[i] != '0' || buffer[i] == '.' ) {
+                break;
+            }
 
-        double_value *= 10;
-        double_value += (buffer[i]-'0');
+            if ( buffer[i] == '0' ) {
+                buffer[i] = '\0';
+                break;
+            }
+        }
     }
 
-    // reach end of buffer (get all numbers in buffer)
-    if ( i == sz ) {
-        return double_value;
-    }
+    // for ( size_t i = 0; i < sz; i++ ) {
+    //         cout << buffer[i] << '/';
+    // }
+    // cout << endl;
 
-    // to get the digit after the decimal point
-    i += 1;
-
-    // get the float part of double value
-    for ( double offset = 0.1 ; i < sz; i++ ) {
-
-        double_value += (offset * (buffer[i]-'0'));
-        offset *= 0.1;
-    }
-    return double_value;
+    return buffer;
 }

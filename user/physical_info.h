@@ -5,6 +5,7 @@
 
     /**
      * @param theta
+     * @param terminal_angle
      * @param alpha
      * @param omega
      * @param length
@@ -12,6 +13,7 @@
      */
     typedef struct physical_info{
         double theta;
+        double terminal_angle;
         double alpha;
         double omega;
         double length;

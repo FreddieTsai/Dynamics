@@ -59,7 +59,7 @@ int main()
 
 
     // initialize values of physical variables
-    physical_info __physical_info{ 0.0, 1.0, 1.0, 20.0, 0.01 };
+    physical_info __physical_info{ 0.0, 180.0, 1.0, 1.0, 20.0, 0.01 };
     pphysical_info physical_info = &__physical_info;
     
 
@@ -82,8 +82,9 @@ int main()
     while ( !terminate_program_TF )
     {
 
-        // set theta = 0 when theta exceed 180 degree
-        if ( physical_info->theta >= 179 ) {
+        // set theta = 0 when theta exceed terminal angle
+        // since theta can't exceed 179.97(need to debug in the future)
+        if ( physical_info->theta >= (physical_info->terminal_angle-5) ) {
             physical_info->theta = 0;
         }
 

@@ -139,8 +139,28 @@ unsigned __stdcall insertion_thread( void *__input_info )
                 while ( ch != '\r' )
                 {
                     ch = getch();
+                    ch = toupper(ch);
                     update_physical_variable( input_info, ch, buffer, idx );
                     physical_info->theta = char_to_double( buffer, idx );
+                }
+
+                input_info->input_name = NONE;
+
+                break;
+
+            case 'B' :
+                input_info->input_name = TERMINAL_ANGLE;
+                program_info_msg << "inserting terminal angle\n";
+
+                // set current angle to 0
+                physical_info->theta = 0.0;
+
+                while ( ch != '\r' )
+                {
+                    ch = getch();
+                    ch = toupper(ch);
+                    update_physical_variable( input_info, ch, buffer, idx );
+                    physical_info->terminal_angle = char_to_double( buffer, idx );
                 }
 
                 input_info->input_name = NONE;
@@ -154,6 +174,7 @@ unsigned __stdcall insertion_thread( void *__input_info )
                 while ( ch != '\r' )
                 {
                     ch = getch();
+                    ch = toupper(ch);
                     update_physical_variable( input_info, ch, buffer, idx );
                     physical_info->time = char_to_double( buffer, idx );
                 }
@@ -169,6 +190,7 @@ unsigned __stdcall insertion_thread( void *__input_info )
                 while ( ch != '\r' )
                 {
                     ch = getch();
+                    ch = toupper(ch);
                     update_physical_variable( input_info, ch, buffer, idx );
                     physical_info->length = char_to_double( buffer, idx );
                 }
@@ -388,7 +410,8 @@ void draw_and_show_screen( pinput_info input_info )
 
     // copy the values of physical variables into a char array
     // and use them to draw data panel
-    char char_theta[DOUBLE_NUMBER_OF_DIGITS], 
+    char char_theta[DOUBLE_NUMBER_OF_DIGITS],
+         char__terminal_angle[DOUBLE_NUMBER_OF_DIGITS], 
          char_alpha[DOUBLE_NUMBER_OF_DIGITS], 
          char_omega[DOUBLE_NUMBER_OF_DIGITS], 
          char_length[DOUBLE_NUMBER_OF_DIGITS], 
@@ -398,6 +421,7 @@ void draw_and_show_screen( pinput_info input_info )
     screen = draw_data_panel(
         screen,
         double_to_char( char_theta, physical_info->theta, DOUBLE_NUMBER_OF_DIGITS ),
+        double_to_char( char__terminal_angle, physical_info->terminal_angle, DOUBLE_NUMBER_OF_DIGITS),
         double_to_char( char_alpha, physical_info->alpha, DOUBLE_NUMBER_OF_DIGITS ),
         double_to_char( char_omega, physical_info->omega, DOUBLE_NUMBER_OF_DIGITS ),
         double_to_char( char_length, physical_info->length, DOUBLE_NUMBER_OF_DIGITS ),
@@ -454,11 +478,6 @@ void draw_and_show_screen( pinput_info input_info )
 char *double_to_char( char *buffer, double double_value, size_t sz )
 {
     snprintf( buffer, sz-1, "%f", double_value );
-    for ( size_t i = 0; i < sz; i++ ) {
-        if ( !((buffer[i] >= '0' && buffer[i] <= '9') || buffer[i] == '.') ) {
-            buffer[i] = '0';
-        }
-    }
 
     return buffer;
 }
