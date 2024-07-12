@@ -2,8 +2,8 @@
  * @file screen.h
  * @author IalvinchangI
  * @brief 處理螢幕顯示
- * @version 0.8
- * @date 2024-07-10
+ * @version 0.9
+ * @date 2024-07-12
  */
 
 
@@ -55,7 +55,7 @@
 
         Screen draw_pendulum(Screen screen, double theta, double length);
 
-        Screen draw_data_panel(Screen screen, char* theta, char* alpha, char* omega, char* length, char* time);
+        Screen draw_data_panel(Screen screen, char* theta, char* terminal_angle, char* alpha, char* omega, char* length, char* time);
 
         Screen draw_info_panel(Screen screen, screen_info_name name);
 

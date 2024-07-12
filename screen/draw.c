@@ -2,8 +2,8 @@
  * @file draw.cpp
  * @author IalvinchangI
  * @brief 畫各個面板 (`clean_screen`, `draw_pendulum`, `draw_data_panel`, `draw_info_panel`, `screen_input`) (`draw_screen_input`) (`flash_TF`)
- * @version 0.8
- * @date 2024-07-11
+ * @version 0.9
+ * @date 2024-07-12
  */
 
 
@@ -20,18 +20,20 @@ static bool flash_TF(Screen screen);
 
 // ================================== constant ==================================
 
-#define STR_THETA   "Angle"
-#define STR_ALPHA   "Angular_Acceleration"
-#define STR_OMEGA   "Angular_Velocity"
-#define STR_LENGTH  "Length"
-#define STR_TIME    "Time"
+#define STR_THETA           "Angle"
+#define STR_TERMINAL_ANGLE  "Terminal_Angle"
+#define STR_ALPHA           "Angular_Acceleration"
+#define STR_OMEGA           "Angular_Velocity"
+#define STR_LENGTH          "Length"
+#define STR_TIME            "Time"
 
-static char *data_panel_contents[5] = {
-    STR_THETA  "               "    STR_EQUAL, 
-    STR_ALPHA  ""                   STR_EQUAL, 
-    STR_OMEGA  "    "               STR_EQUAL, 
-    STR_LENGTH "              "     STR_EQUAL, 
-    STR_TIME   "                "   STR_EQUAL
+static char *data_panel_contents[6] = {
+    STR_THETA           "               "    STR_EQUAL, 
+    STR_TERMINAL_ANGLE  "      "             STR_EQUAL, 
+    STR_ALPHA           ""                   STR_EQUAL, 
+    STR_OMEGA           "    "               STR_EQUAL, 
+    STR_LENGTH          "              "     STR_EQUAL, 
+    STR_TIME            "                "   STR_EQUAL, 
 };
 
 static char *info_content[2] = {
@@ -43,6 +45,7 @@ static char *info_content[2] = {
     , 
     "Insert Mode"   STR_COLON                       STR_LARGE_SPACE
     "A"             STR_COLON   STR_THETA           STR_SMALL_SPACE
+    "B"             STR_COLON   STR_TERMINAL_ANGLE  STR_SMALL_SPACE
     "T"             STR_COLON   STR_TIME            STR_SMALL_SPACE
     "L"             STR_COLON   STR_LENGTH          STR_LARGE_SPACE
     "C"             STR_COLON   "Exit Insert Mode"  STR_LARGE_SPACE
@@ -58,19 +61,19 @@ unsigned short const INPUT_FIELD_LENGTH = 9;
 // the width of data panel
 unsigned short const DATA_PANEL_WIDTH = 34;
 // the height of data panel
-unsigned short const DATA_PANEL_HEIGHT = 11;
+unsigned short const DATA_PANEL_HEIGHT = 13;
 
 // the length of info content
-unsigned short const INFO_LENGTH = 89;
+unsigned short const INFO_LENGTH = 109;
 // the height of info panel
 unsigned short const INFO_PANEL_HEIGHT = 3;
 
 // the minimum width the screen can have
-// unsigned short const SCREEN_MINIMUM_WIDTH = INFO_LENGTH + 2;  // 91
-unsigned short const SCREEN_MINIMUM_WIDTH = 91;
+// unsigned short const SCREEN_MINIMUM_WIDTH = INFO_LENGTH + 2;  // 111
+unsigned short const SCREEN_MINIMUM_WIDTH = 111;
 // the minimum height the screen can have
-// unsigned short const SCREEN_MINIMUM_HEIGHT = DATA_PANEL_HEIGHT + 2 + INFO_PANEL_HEIGHT;  // 16
-unsigned short const SCREEN_MINIMUM_HEIGHT = 16;
+// unsigned short const SCREEN_MINIMUM_HEIGHT = DATA_PANEL_HEIGHT + 2 + INFO_PANEL_HEIGHT;  // 18
+unsigned short const SCREEN_MINIMUM_HEIGHT = 18;
 
 
 // the frequncy that screen_input flash
@@ -133,14 +136,15 @@ Screen draw_pendulum(Screen screen, double theta, double length) {
  * 
  * @param screen 螢幕物件
  * @param theta 單擺 和 X軸正向 的夾角
+ * @param terminal_angle 終端角度
  * @param alpha 單擺的角加速度
  * @param omega 單擺的角速度
  * @param length 單擺的長度
  * @param time 時間差
  * @return 傳入的螢幕物件 or NULL(執行失敗)
  */
-Screen draw_data_panel(Screen screen, char* theta, char* alpha, char* omega, char* length, char* time) {
-    char *input_data[5] = {theta, alpha, omega, length, time};
+Screen draw_data_panel(Screen screen, char* theta, char* terminal_angle, char* alpha, char* omega, char* length, char* time) {
+    char *input_data[6] = {theta, terminal_angle, alpha, omega, length, time};
     int data_panel_content_length = strlen(data_panel_contents[0]);
     position current_pos = {
         screen -> layout.data_panel.x + 1, 
@@ -148,7 +152,7 @@ Screen draw_data_panel(Screen screen, char* theta, char* alpha, char* omega, cha
     };
 
     // print
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 6; i++) {
         // print and move
         print_string(screen, current_pos, data_panel_contents[i], data_panel_content_length);
         current_pos.x += data_panel_content_length;
@@ -176,7 +180,7 @@ Screen draw_data_panel(Screen screen, char* theta, char* alpha, char* omega, cha
 Screen draw_screen_input(Screen screen) {
     if (screen -> input_name != NONE && flash_TF(screen)) {  // print input?
         position current_pos = {
-            screen -> layout.data_panel.x + 1 + DATA_PANEL_WIDTH - INPUT_FIELD_LENGTH, 
+            screen -> layout.data_panel.x + DATA_PANEL_WIDTH - INPUT_FIELD_LENGTH - 1, 
             screen -> layout.data_panel.y + 1 + screen -> input_name * 2, 
         };
         for (int i = 0; i <= INPUT_FIELD_LENGTH; i++) {

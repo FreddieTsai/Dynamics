@@ -18,12 +18,13 @@
 * ### screen_input_name (`enum`)
 
     適用於`screen_input`的參數
-    1. `THETA`  : 單擺 和 X軸正向 的夾角
-    2. `ALPHA`  : 單擺的角加速度
-    3. `OMEGA`  : 單擺的角速度
-    4. `LENGTH` : 單擺的長度
-    5. `TIME`   : 時間差
-    6. `NONE`   : 沒在輸入
+    1. `THETA`          : 單擺 和 X軸正向 的夾角
+    2. `ALPHA`          : 單擺的角加速度
+    3. `OMEGA`          : 單擺的角速度
+    4. `LENGTH`         : 單擺的長度
+    5. `TIME`           : 時間差
+    6. `TERMINAL_ANGLE` : 終端角度
+    7. `NONE`           : 沒在輸入
 
     - - -
 
@@ -157,16 +158,17 @@
 
     * 功能：把 顯示當前數值的面板 畫出來
     * 參數：
-        1. `screen` : 螢幕物件
-        2. `theta`  : 單擺 和 X軸正向 的夾角
-        3. `alpha`  : 單擺的角加速度
-        4. `omega`  : 單擺的角速度
-        5. `length` : 單擺的長度
-        6. `time`   : 時間差
+        1. `screen`         : 螢幕物件
+        2. `theta`          : 單擺 和 X軸正向 的夾角
+        3. `terminal_angle` : 終端角度
+        4. `alpha`          : 單擺的角加速度
+        5. `omega`          : 單擺的角速度
+        6. `length`         : 單擺的長度
+        7. `time`           : 時間差
     * 回傳值：傳入的螢幕物件 or NULL(執行失敗)
 
     ```c++
-    Screen draw_data_panel(Screen screen, char* theta, char* alpha, char* omega, char* length, char* time)
+    Screen draw_data_panel(Screen screen, char* theta, char* terminal_angle, char* alpha, char* omega, char* length, char* time)
     ```
 
     - - -
